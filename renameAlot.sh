@@ -7,8 +7,7 @@ fi
 for file in *
 do 
 	if [[ $file == MasterAfter_* ]] ; then
-		res=`echo $file|cut -d'_' -f 2 ` 
+		res=${file/MasterAfter_/} 
 		mv $file $res
 	fi
-	#mv "$file" "${file#linux_}" 
 done
