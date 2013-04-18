@@ -1,0 +1,8 @@
+CREATE  TABLE `didiwin`.`simplestchatever` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) CHARACTER SET 'utf32' COLLATE 'utf32_unicode_ci' NULL ,
+  `message` LONGTEXT NULL ,
+  `date` DATETIME NULL ,
+  PRIMARY KEY (`id`) )
+DEFAULT CHARACTER SET = utf32
+COLLATE = utf32_unicode_ci;
