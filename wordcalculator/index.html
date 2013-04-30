@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<title>Simple Work Hour Calculator</title>
+		<meta name="description" content="" />
+		<meta name="author" content="HeyPano" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+		<script type="text/javascript" src="jquery/jquery-1.9.0.js"></script>
+		<script type="text/javascript" src="words.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,600,300,400' rel='stylesheet' type='text/css'>
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<!-- <link rel="shortcut icon" href="/favicon.ico" /> -->
+		<!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> -->
+		<style>
+			body {
+				font-family: Open Sans, sans-serif;
+			}
+			h1 {
+				font-weight: 600;
+			}
+			.inline {
+				display: inline;
+				margin-left: 10px;
+			}
+
+			button {
+				width:50px;
+				height:30px;
+			}
+			td {
+				width: 50px;
+			}
+			table {
+				table-layout: fixed;
+			}
+		</style>
+		<script>
+
+			//http://stackoverflow.com/questions/237104/array-containsobj-in-javascript
+			Array.prototype.contains = function(obj) {
+			    var i = this.length;
+			    while (i--) {
+			        if (this[i] === obj) {
+			            return true;
+			        }
+			    }
+			    return false;
+			}
+			$(document).ready(function() {
+				$("#search").click(function(e){
+					$("#result").html("Waiting...");
+					var length = Number($("#length").val());
+					var letters = $("#letters").val();
+					console.log(length);
+					console.log(letters);
+					var result = possibleCombinations(letters,length);
+					$("#result").html(result.join('<br>'));
+				});
+			});
+
+		function possibleCombinations(string,length){
+			var allOfThem = allCombinations(string,length);
+			var returnedArray = new Array();
+			for(var i=0;i<allOfThem.length;i++){
+				if(words.contains(allOfThem[i])){
+					returnedArray.push(allOfThem[i]);
+				}
+			}
+			return returnedArray;
+		}
+		function allCombinations(string,length,current,returnedArray){
+			//First iteration initialization
+			if(typeof current == "undefined"){
+				current = '';
+			}
+			if(typeof returnedArray == "undefined"){
+				returnedArray = new Array();
+			}
+			//Get the letters
+			var components = string.split('');
+			//End condition
+			if(length==0){
+				returnedArray.push(current);
+				return;
+				}
+			else{
+				//For each letter
+				for(var i=0;i<components.length;i++){
+					//Cloning the components so that it doesn't mess the loop up
+					var clonedComponents = components.slice(0);
+					//Remove this letter from the list
+					clonedComponents.splice(i,1);
+					//Turn it back into a string
+					var componentString = clonedComponents.join('');
+					//The word starts with the letter
+					//Continue with the rest (we used one letter)
+					allCombinations(componentString,length-1,current+components[i],returnedArray);
+				}
+			}
+			return returnedArray;
+		}
+			
+			
+		</script>
+	</head>
+
+	<body>
+		<div>
+			<header>
+				<h1>Word List Calculator</h1>
+			</header>
+			<div>
+				<label>Letters:</label>
+				<input type="text" id="letters"></input>
+				<label>Length:</label>
+				<input type="text" id="length"></input>
+				<button id="search">Search</button>
+			</div>
+			<div id="result">
+				
+			</div>
+			<footer>
+				<p>
+					&copy; Copyright  by Squawk
+				</p>
+			</footer>
+		</div>
+	</body>
+</html>
