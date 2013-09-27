@@ -61,7 +61,8 @@
   $(document).ready(function(){
 	  
 	  String.prototype.capitalize = function() {
-		    return this.charAt(0).toUpperCase() + this.slice(1);
+		  	var st = $.trim(this);
+		    return st.charAt(0).toUpperCase() + st.slice(1);
 		}
 	  
       //When user presses enter
