@@ -92,7 +92,9 @@
     	        	
     	        }
     	        $('#people_input').keypress(function(e){
-    	        	window.alert(winner.capitalize()+" already won.");
+    	        	if(e.which == 13){
+    	        		window.alert(winner.capitalize()+" already won.");
+    	        	}
     	        })
 				    	        
     	    }
