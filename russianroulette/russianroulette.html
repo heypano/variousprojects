@@ -1,0 +1,141 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HeyPano - Russian Roulette</title>
+  <meta name="description" content="Russian Roulette">
+  <meta name="author" content="Pano">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,600,300,400' rel='stylesheet' type='text/css'>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <style>
+  html,body{
+    height:100%;
+    max-height:100%;
+    overflow:hidden;
+  }
+  body, div.person,.log,input{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 120%;
+    width:auto;
+    padding:10px;
+    max-width:100%;
+    /*line-height: 150%;
+    font-size: 120%;*/
+  }
+  input[type="text"]{
+    border: 1px solid rgb(150,150,150);
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-right:20px;
+    margin-bottom:10px;
+  }
+  h1,h2,h3,h4,h5{
+    font-weight:300;
+    margin-top:0px;
+    margin-bottom:0px;
+  }
+  h6{
+    font-weight:300;
+    margin-top:0px;
+    margin-bottom:10px;
+  }
+  .person{
+  	padding-right:10px;
+  	display:inline-block;
+  }
+  .dead{
+  	text-decoration: line-through;
+  	color:red;
+  }
+  .winner{
+  	font-weight:bold;
+  	color:green;
+  }
+  div.log{
+  	padding-bottom:0px;
+  }
+  </style>
+  <script>
+  var people;
+  var winner;
+  $(document).ready(function(){
+	  
+	  String.prototype.capitalize = function() {
+		    return this.charAt(0).toUpperCase() + this.slice(1);
+		}
+	  
+      //When user presses enter
+      $('#people_input').keypress(function(e) {
+    	    if(e.which == 13 && !winner) {
+    	        people = $('#people_input').val().split(',');
+    	        
+    	        var people_blacklist = new Array();
+    	        
+    	        $('#content').append('<h3>People Playing</h3><hr><div id="the_people"></div>');
+    	    	
+    	        
+    	        for(var i=0;i<people.length;i++){
+    	        	$('#the_people').append('<div id="person_'+i+'" class="person">'+people[i].capitalize()+'</div>');
+    	        	people_blacklist.push(i);
+    	        }
+    	        $('#content').append('<h3>Death Log</h3><hr><div id="dead_people"></div>');
+    	        var order = 0; ;
+    	        while(people_blacklist.length > 0){
+    	        	var deadPerson = people_blacklist.splice(Math.floor(Math.random() * people_blacklist.length), 1)[0];
+    	        	order++;
+    	        	if(people_blacklist.length>0)killPerson(deadPerson,people[deadPerson],order,false);
+    	        	else{
+    	        		killPerson(deadPerson,people[deadPerson],order,true);
+    	        		winner = people[deadPerson];
+    	        	}
+    	        	
+    	        }
+    	        $('#people_input').keypress(function(e){
+    	        	window.alert(winner+" already won.");
+    	        })
+				    	        
+    	    }
+    	});
+
+      });
+
+  function killPerson(i,name,order,alive){
+	  setTimeout(function(){
+		  var person_div_id = 'person_'+i;
+		  if(!alive){
+			  $('#'+person_div_id).addClass('dead');  
+			  $('#dead_people').append('<div class="log">'+name.capitalize()+' is dead</div>');
+		  } 
+		  else{
+			  $('#'+person_div_id).addClass('winner');
+			  $('#dead_people').append('<div class="log">'+name.capitalize()+' won! Congratulations '+name.capitalize()+', you have '+(order-1)+' corpses around you.</div>');
+		  } 
+	  },order*2000);
+
+  }
+  
+  
+    
+
+  </script>
+
+  <!--[if lt IE 9]>
+
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+
+  <![endif]-->
+
+</head>
+
+<body>
+
+<h2>Russian Roulette</h2>
+
+<p>Please provide the names of the people playing, separated by commas</p>
+<input type="text" id="people_input"/>
+<div id="content">
+
+</div>
+</body>
+
+</html>
