@@ -22,10 +22,11 @@ var cachedMessages = new Array();
 //TODO Implement sound with on/off
 //TODO Implement data storage on the server (logs)
 //TODO Implement timestamp
-//TODO Implement no duplicate names (keep active list of people in the chatroom)
+//TODO Implement Keep and display active list of people in the chatroom
+//TODO Implement no duplicate names
 //TODO Implement sub-chatrooms
 //TODO Implement checking if same person is sending same name (or only read first time name is sent)
-
+//TODO Implement "X entered the chatroom" and "X entered the chatroom"
 io.sockets.on('connection', function(socket) {
 
 	// Send things that were last said
