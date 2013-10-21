@@ -1,0 +1,89 @@
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+  // Establish socket connection
+  var socket = io.connect('http://localhost');
+  $(document).ready(function(e){
+	  $("#message").keypress(function(e) {
+		if(e.which == 13) {
+			var widget = e.target;
+			socket.emit("message",widget.value);
+			// emit vs send?
+		}
+	   });
+	  socket.on('message', function(data){
+		  var message = data.message;
+		  $("#messageBack").append(message);
+		console.log(data);
+	  });
+  });
+
+  /*
+  socket.on('message', function (data) {
+	  console.log("got it: ");
+		console.log(data);
+	  });
+  socket.on('message', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });*/
+</script>
+
+<title>node.js - socket.io Pano test</title>
+</head>
+<body>
+<h1> node.js - socket.io Pano test</h1>
+<input id="message"></input>
+<h2>Messages</h2>
+<div id = "messageBack"></div>
+
+
+<h2>What I did</h2>
+cd ~/Downloads/node-v0.10.21/;
+sudo ./configure && sudo make && sudo make install;
+
+<h3>app.js:</h3>
+<pre>
+var app = require('http').createServer(handler)
+  , io = require('socket.io').listen(app)
+  , fs = require('fs')
+
+app.listen(80);
+
+function handler (req, res) {
+  fs.readFile(__dirname + '/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+
+    res.writeHead(200);
+    res.end(data);
+  });
+}
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+</pre>
+<h3>index.html</h3>
+<pre>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost');
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
+</pre>
+npm install socket.io;
+sudo node app.js;
+</body>
+</html>
