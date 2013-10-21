@@ -22,23 +22,33 @@
 				$("#name").before("<strong>"+name+"</strong>");
 				$("#name").remove();
 			}
-			var text = e.target.value;
+			var text = $("#message").val();
+			$("#message").val('');
 			// emit vs send?
 			if(text.length>0)socket.emit("message",{name: name, message : text});
 		}
 	   });
 	  socket.on('message', function(data){
-		  var message = data.message;
-		  var name = data.name;
-		  var color = pickColor(name);
-		  var colorString = "rgb("+color.red+","+color.green+","+color.blue+")";
-		  $("#messageBack").append('<strong style="color:'+colorString+';">'+name+"</strong> says: "+message+"<br>");
-		  $("#message").val('');
-		  $("#messageBack").animate({ scrollTop: $("#messageBack").prop('scrollHeight') }, 100);
-		  console.log("Received Data: "+data);
+		  printMessage(data);
+		  
+	  });
+	  socket.on('cached', function(data){
+		  for(var i=0;i<data.length;i++){
+			  printMessage(data[i]);
+		  }
 	  });
   });
 
+  function printMessage(data){
+	  var message = data.message;
+	  var name = data.name;
+	  var color = pickColor(name);
+	  var colorString = "rgb("+color.red+","+color.green+","+color.blue+")";
+	  $("#messageBack").append('<strong style="color:'+colorString+';">'+name+"</strong> says: "+message+"<br>");
+	  
+	  $("#messageBack").animate({ scrollTop: $("#messageBack").prop('scrollHeight') }, 100);
+  }
+  
   function pickColor(string){
 	  var interval = Math.floor(string.length / 3);
 	  var p1 = string.substr(0,interval);

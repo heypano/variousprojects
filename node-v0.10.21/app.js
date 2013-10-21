@@ -15,17 +15,21 @@ function handler(req, res) {
 	});
 }
 
-
+var cachedMessages = new Array();
 
 
 io.sockets.on('connection', function(socket) {
-	/*socket.emit('news', {
-		hello : 'world'
-	});*/
-	
+
+	// Send things that were last said
+	socket.emit('cached',cachedMessages);
 	socket.on('message', function(data) {
 		var name = data.name;
 		var message = data.message;
+		
+		// Save 10 Messages
+		if(cachedMessages.length >= 10)cachedMessages.shift();
+		cachedMessages.push(data);
+		
 		// Send the message to everyone else
 		socket.broadcast.emit('message', {
 			"name" : name,
