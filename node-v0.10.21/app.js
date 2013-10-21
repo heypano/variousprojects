@@ -27,6 +27,7 @@ var cachedMessages = new Array();
 //TODO Implement sub-chatrooms
 //TODO Implement checking if same person is sending same name (or only read first time name is sent)
 //TODO Implement "X entered the chatroom" and "X entered the chatroom"
+//TODO Implement error handling (server dies etc)
 io.sockets.on('connection', function(socket) {
 
 	// Send things that were last said
