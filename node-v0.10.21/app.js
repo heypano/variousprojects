@@ -19,6 +19,9 @@ var cachedMessages = new Array();
 
 
 //TODO Implement "X is typing..."
+//TODO Implement sound with on/off
+//TODO Implement data storage on the server (logs)
+//TODO Implement timestamp
 
 io.sockets.on('connection', function(socket) {
 
