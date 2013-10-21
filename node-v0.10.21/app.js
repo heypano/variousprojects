@@ -18,10 +18,13 @@ function handler(req, res) {
 var cachedMessages = new Array();
 
 
-//TODO Implement "X is typing..."
+//TODO Implement "X is typing..." (send is not typing a)when hit enter b)when 2 inactive seconds
 //TODO Implement sound with on/off
 //TODO Implement data storage on the server (logs)
 //TODO Implement timestamp
+//TODO Implement no duplicate names (keep active list of people in the chatroom)
+//TODO Implement sub-chatrooms
+//TODO Implement checking if same person is sending same name (or only read first time name is sent)
 
 io.sockets.on('connection', function(socket) {
 
