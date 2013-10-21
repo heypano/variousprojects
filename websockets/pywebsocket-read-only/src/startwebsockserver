@@ -1,0 +1,1 @@
+sudo python mod_pywebsocket/standalone.py -p 9988 -w ../example/

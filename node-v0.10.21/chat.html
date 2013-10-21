@@ -1,0 +1,54 @@
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+  // Establish socket connection
+  var socket = io.connect('http://localhost');
+  var name = "anonymous";
+  $(document).ready(function(e){
+	  $("#name").keypress(function(e) {
+		if(e.which == 13) {
+			name = e.target.value;
+			$("#name").before("<strong>"+name+"</strong>");
+			$("#name").remove();
+
+		}
+	   });
+	  $("#message").keypress(function(e) {
+		if(e.which == 13) {
+			var widget = e.target;
+			socket.emit("message",{name: name, message : widget.value});
+			// emit vs send?
+		}
+	   });
+	  socket.on('message', function(data){
+		  var message = data.message;
+		  var name = data.name;
+		  $("#messageBack").append(name+" says: "+message+"<br>");
+		console.log(data);
+	  });
+  });
+
+  /*
+  socket.on('message', function (data) {
+	  console.log("got it: ");
+		console.log(data);
+	  });
+  socket.on('message', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });*/
+</script>
+
+<title>node.js - socket.io Pano test chat</title>
+</head>
+<body>
+<label>Name: </label>
+<input id="name"></input>
+<label>Message: </label>
+<input id="message"></input>
+<h2>Messages</h2>
+<div id = "messageBack"></div>
+</body>
+</html>
