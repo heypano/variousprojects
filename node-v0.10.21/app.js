@@ -18,6 +18,8 @@ function handler(req, res) {
 var cachedMessages = new Array();
 
 
+//TODO Implement "X is typing..."
+
 io.sockets.on('connection', function(socket) {
 
 	// Send things that were last said
