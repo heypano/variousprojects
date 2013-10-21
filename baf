@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Cwd;
+
+my ($newDir, @commands) = @ARGV;
+
+my $commands = join(' ',@commands);
+
+my $currentDir = getcwd;
+
+chdir $newDir;
+
+system($commands);
+
+chdir $currentDir;
+
+

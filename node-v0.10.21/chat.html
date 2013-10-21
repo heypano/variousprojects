@@ -4,7 +4,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>
   // Establish socket connection
-  var socket = io.connect('http://localhost');
+  var socket = io.connect(); // Removing localhost because it was only working locally
   var name = "anonymous";
   $(document).ready(function(e){
 	  $("#name").keypress(function(e) {
