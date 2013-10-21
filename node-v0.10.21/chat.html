@@ -1,8 +1,8 @@
 <html>
 <head>
-<script src="/socket.io/socket.io.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
   // Establish socket connection
   var socket = io.connect(); // Removing localhost because it was only working locally
   var name = "anonymous";
@@ -17,19 +17,50 @@
 	   });
 	  $("#message").keypress(function(e) {
 		if(e.which == 13) {
-			var widget = e.target;
-			socket.emit("message",{name: name, message : widget.value});
+			if($("#name").length > 0 && $("#name").val().length > 0 && name == "anonymous"){
+				name = $("#name").val();
+				$("#name").before("<strong>"+name+"</strong>");
+				$("#name").remove();
+			}
+			var text = e.target.value;
 			// emit vs send?
+			if(text.length>0)socket.emit("message",{name: name, message : text});
 		}
 	   });
 	  socket.on('message', function(data){
 		  var message = data.message;
 		  var name = data.name;
-		  $("#messageBack").append(name+" says: "+message+"<br>");
-		console.log(data);
+		  var color = pickColor(name);
+		  var colorString = "rgb("+color.red+","+color.green+","+color.blue+")";
+		  $("#messageBack").append('<strong style="color:'+colorString+';">'+name+"</strong> says: "+message+"<br>");
+		  $("#message").val('');
+		  $("#messageBack").animate({ scrollTop: $("#messageBack").prop('scrollHeight') }, 100);
+		  console.log("Received Data: "+data);
 	  });
   });
 
+  function pickColor(string){
+	  var interval = Math.floor(string.length / 3);
+	  var p1 = string.substr(0,interval);
+	  var p2 = string.substr(interval,2*interval-1);
+	  var p3 = string.substr(2*interval);
+	  // Calculate these values based on the sum of the character codes 
+	  // Each color less than 200 to ensure contrast)
+	  var r = (charCodeSum(p1)%20) * 10;
+	  var g = (charCodeSum(p2)%20) * 10;
+	  var b = (charCodeSum(p3)%20) * 10;
+	  
+	  return {red : r, green: g, blue: b};
+  }
+  
+  function charCodeSum(string){
+	  var charCodeSum = 0;
+	  for(var i=0;i<string.length;i++){
+		  charCodeSum += string.charCodeAt(i);
+	  }
+	  return charCodeSum;
+  }
+  
   /*
   socket.on('message', function (data) {
 	  console.log("got it: ");
@@ -40,15 +71,123 @@
     socket.emit('my other event', { my: 'data' });
   });*/
 </script>
-
-<title>node.js - socket.io Pano test chat</title>
+	<meta name="description" content="Node JS chat">
+	<meta name="author" content="Pano">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,600,300,400' rel='stylesheet' type='text/css'>
+	<title>node.js - socket.io Pano test chat</title>
+	<style>
+	
+	html,body{
+	
+	  height:100%;
+	
+	  max-height:100%;
+	
+	  overflow:hidden;
+	
+	}
+	
+	body, input{
+	
+	  font-family: 'Open Sans', sans-serif;
+	
+	  font-size: 120%;
+	
+	  width:auto;
+	
+	  padding:10px;
+	
+	  max-width:100%;
+	
+	  /*line-height: 150%;
+	
+	  font-size: 120%;*/
+	
+	}
+	
+	
+	
+	input[type="text"]{
+	
+	  border: 1px solid rgb(150,150,150);
+	
+	  -moz-border-radius: 5px;
+	
+	  border-radius: 5px;
+	
+	  margin-right:20px;
+	  
+	  padding: 5px;
+	
+	}
+	
+	h1,h2,h3,h4,h5{
+	
+	  font-weight:300;
+	
+	  margin-top:0px;
+	
+	  margin-bottom:0px;
+	
+	}
+	
+	label{
+		padding-top: 13px;
+		display:inline-block;
+	}
+	
+	h6{
+	
+	  font-weight:300;
+	
+	  margin-top:0px;
+	
+	  margin-bottom:10px;
+	
+	}
+	
+	
+	#name{
+	
+	  width: 10%;
+	}
+	
+	.inputarea{
+	   height: 50px;
+	}
+	
+	.bottom{
+		height: 60%;
+	}
+	
+	h1,h2{
+		margin-bottom: 10px;
+	}
+	
+	#messageback{
+		height: 100%;
+		overflow-y: scroll;
+		word-wrap: break-word;
+	}
+	</style>
 </head>
 <body>
-<label>Name: </label>
-<input id="name"></input>
-<label>Message: </label>
-<input id="message"></input>
-<h2>Messages</h2>
-<div id = "messageBack"></div>
+	<h1>Welcome to Pano's chatroom</h1>
+	<div class = "top">
+		<div class="inputarea">
+			<label>Name: </label>
+			<input id="name" type="text"></input><br>
+		</div>
+		<div class="inputarea">
+			<label>Enter your Message: </label>
+			<input id="message" type="text"></input>
+		</div>
+	</div>
+	<hr>
+	<div class = "bottom">
+		<h2>Messages</h2>
+		<div id = "messageBack"></div>
+	</div>
 </body>
 </html>
