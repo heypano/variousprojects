@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+# Change location and executes commands
+
+use strict;
+use warnings;
+use Cwd;
+
+my ($newDir, @commands) = @ARGV;
+
+my $commands = join(' ',@commands);
+$commands =~ s/"/\\"/g;
+
+my $currentDir = getcwd;
+
+chdir $newDir;
+
+system('bash -i -c "'.$commands.'"');
+
+chdir $currentDir;
