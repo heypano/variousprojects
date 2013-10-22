@@ -30,6 +30,7 @@ function handler(req, res) {
 //TODO Implement data storage on the server (logs)
 //TODO Implement timestamp
 //TODO Implement Keep and display active list of people in the chatroom
+//TODO Send message on disconnect
 //TODO Implement no duplicate names
 //TODO Implement sub-chatrooms
 //TODO Implement checking if same person is sending same name (or only read first time name is sent)
