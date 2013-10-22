@@ -38,42 +38,59 @@ function handler(req, res) {
 //TODO Implement error handling (server dies etc)
 //TODO let users pick color
 
-var clients = new Object();
-var cachedMessages = new Array();
+//var clients = new Object();
+//var cachedMessages = new Array();
+
+
 
 io.sockets.on('connection', function(socket) {
-
-	// Add client to the list
-	clients[socket.id] = {name: 'anonymous'};
+	// Make the person object
+	var person = new Util.Person('anonymous',socket);
+	
+	// Add person to the list
+	Util.personList.add(person);
 	
 	// Broadcast list of clients
-	broadcastAll(socket,'clientList',clients);
+	Util.personList.broadcast(person);
 	
 	// Send things that were last said
-	socket.emit('cached',cachedMessages);
+	//socket.emit('cached',cachedMessages);
 	
 	socket.on('message', function(data) {
 		var name = data.name;
 		
 		// Save the client's name (and IP later?)
-		clients[socket.id].name = name;
+		//clients[socket.id].name = name;
 		
 		// Broadcast list of clients
-		broadcastAll(socket,'clientList',clients);
+		//broadcastAll(socket,'clientList',clients);
 		
 		// Broadcast message
 		broadcastMessage(socket,data);
 		
 		// Save 10 Messages
-		if(cachedMessages.length >= 10)cachedMessages.shift();
-		cachedMessages.push(data);
+		//if(cachedMessages.length >= 10)cachedMessages.shift();
+		//cachedMessages.push(data);
 		
 	});
 	
+	socket.on('name', function(data){
+		var name = data.name;
+		
+		var person = Util.personList.list[socket.id];
+		person.name = name;
+		
+		Util.personList.broadcast(person);
+	});
+	
+	
 	// When someone leaves
 	socket.on('disconnect', function() {
-	   	delete clients[socket.id];
-	   	broadcastAll(socket,'clientList',clients);
+		// Delete the person from the list
+		Util.personList.remove(socket.id)
+		
+		// Send the updated list to the client
+		Util.personList.broadcast(person);
 	});
 	
 });

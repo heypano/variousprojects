@@ -10,9 +10,12 @@
 	  $("#name").keypress(function(e) {
 		if(e.which == 13) {
 			name = e.target.value;
-			$("#name").before("<strong>"+name+"</strong>");
-			$("#name").remove();
-
+			if(name.length>0){
+				$("#name").before("<strong>"+name+"</strong>");
+				$("#name").remove();
+				console.log(socket);
+				socket.emit("name",{name: name});
+			}
 		}
 	   });
 	  $("#message").keypress(function(e) {
@@ -46,6 +49,8 @@
 	  });
 	  
 	  socket.on('clientList',function(clients){
+		  console.log("===== Received Client List")
+		  console.log(clients);
 		  populateClientList(clients);
 	  });
 	  
@@ -84,11 +89,11 @@
   }
   
   function populateClientList(clients){
-	  var clientKeys = Object.keys(clients);
-	  var numClients = clientKeys.length;
+	  var peopleList = clients.data;
+	  var numClients = peopleList.length;
 	  var string = numClients+" client"+(numClients>1?"s":'')+" connected: ";
 	  for(var i=0;i<numClients;i++){
-		  var name = clients[clientKeys[i]].name;
+		  var name = peopleList[i].name;
 		  var color = pickColor(name);
 		  var colorString = "rgb("+color.red+","+color.green+","+color.blue+")";
 		  string += '<strong style="color:'+colorString+';">'+name+"</strong>";
@@ -205,6 +210,7 @@
 	}
 	.top{
 		min-height:15%;
+		margin-bottom:20px
 	}
 	.bottom{
 		min-height: 50%;
@@ -236,7 +242,6 @@
 			<input id="message" type="text"></input>
 		</div>
 	</div>
-	<br>
 	<hr>
 	<div class = "bottom">
 		<h2>Messages</h2>

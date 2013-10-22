@@ -10,6 +10,7 @@
  */
 
 function Person(name,socket){
+	console.log("==== new Person");
 	this.name = name;
 	this.socket = socket;
 	this.uid = this.socket.id;
@@ -22,7 +23,17 @@ function Person(name,socket){
  * @param message The message content
  */
 Person.prototype.sendMessage = function(content){
+	console.log("==== Person.sendMessage");
 	var message = new Message(this,"message",content);
+	message.send();
+}
+
+/**
+ * Broadcasts the list of clients
+ */
+Person.prototype.broadcastList = function(content){
+	console.log("==== Person.broadcastList");
+	var message = new Message(this,"clientList",content);
 	message.send();
 }
 
@@ -34,6 +45,7 @@ Person.prototype.sendMessage = function(content){
  * @returns a person
  */
 function Message(sender,type,content) {
+	console.log("==== New Message");
 	this.sender = sender;
 	this.type = type;
 	this.content = content;
@@ -41,11 +53,14 @@ function Message(sender,type,content) {
 }
 
 Message.prototype.send = function(){
+	console.log("==== Message.send");
 	var socket = this.sender.socket;
+	/* Filter the data that's being sent */
 	var data = {
 				"name" : this.sender.name,
-				"data" : this.content
+				"data" : this.content,
 			   };
+	console.log(data);
 		
 	/* To the person that sent it */
 	socket.emit(this.type, data);
@@ -53,35 +68,60 @@ Message.prototype.send = function(){
 	socket.broadcast.emit(this.type, data);
 }
 
+
 /**
  * The list of clients to start with;
  */
 
-function ClientList(list){
-	this.list = list;
+function PersonList(){
+	console.log("==== New PersonList");
+	this.list = new Object();
 }
 
-ClientList.prototype.addClient = function(client){
-	
-
+PersonList.prototype.add = function(person){
+	console.log("==== PersonList.add");
+	this.list[person.uid] = person;
 }
 
-ClientList.prototype.removeClient = function(client){
-	
+PersonList.prototype.remove = function(uid){
+	console.log("==== PersonList.remove");
+	delete this.list[uid];
 }
 
-ClientList.prototype.broadcast = function(client){
-	
+PersonList.prototype.broadcast = function(person){
+	console.log("==== PersonList.broadcast");
+	person.broadcastList(this.getNameList());
 }
 
-ClientList.prototype.getListCount = function(){
+PersonList.prototype.getNameList = function(){
+	console.log("==== PersonList.getNameList");
+	var unfilteredList = this.list;
+	var filteredList = Object.keys(this.list).map(function(single){
+		return {name: unfilteredList[single].name}; //TODO perhaps color here
+		});
+	console.log(filteredList)
+	return filteredList;
+}
+
+PersonList.prototype.getListCount = function(){
+	console.log("==== PersonList.getListCount");
 	return Object.keys(this.list).length;
 } 
 
 /*
  * Objects
  */
-var clientList = new ClientList(new Object());
+var personList = new PersonList(new Object());
+var cachedMessages = new Array();
+
+/**
+ * @param message: the message object
+ */
+cachedMessages.add = function(message){
+	// Save 10 Messages
+	if(this.length >= 10)this.shift();
+	this.push({name: message.sender.name, message: message.content});
+}
 
 /*
  * Functions
@@ -103,3 +143,4 @@ function connectionEnd(socket){
 
 module.exports.Person = Person;
 module.exports.Message = Message;
+module.exports.personList = personList;
