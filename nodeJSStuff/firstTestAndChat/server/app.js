@@ -36,12 +36,12 @@ function handler(req, res) {
 //TODO Implement checking if same person is sending same name (or only read first time name is sent)
 //TODO Implement "X entered the chatroom" and "X entered the chatroom"
 //TODO Implement error handling (server dies etc)
+//TODO let users pick color
+
 var clients = new Object();
 var cachedMessages = new Array();
 
 io.sockets.on('connection', function(socket) {
-	console.log("---------------------------------");
-	console.log(typeof socket );
 
 	// Add client to the list
 	clients[socket.id] = {name: 'anonymous'};

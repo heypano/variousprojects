@@ -17,24 +17,6 @@ function Person(name,socket){
 	this.numMessagesSent = 0;
 }
 
-function broadcastMessage(socket,data){
-	var name = data.name;
-	var message = data.message;
-	// Send the message to everyone
-	broadcastAll(socket,'message', {
-		"name" : name,
-		"message" : message
-	});
-}
-function broadcastMessage(socket,data){
-	var name = data.name;
-	var message = data.message;
-	// Send the message to everyone
-	broadcastAll(socket,'message', {
-		"name" : name,
-		"message" : message
-	});
-}
 /**
  * Sends a message
  * @param message The message content
@@ -62,8 +44,8 @@ Message.prototype.send = function(){
 	var socket = this.sender.socket;
 	var data = {
 				"name" : this.sender.name,
-				"data" : this.content;
-			   } 
+				"data" : this.content
+			   };
 		
 	/* To the person that sent it */
 	socket.emit(this.type, data);
@@ -71,9 +53,47 @@ Message.prototype.send = function(){
 	socket.broadcast.emit(this.type, data);
 }
 
+/**
+ * The list of clients to start with;
+ */
+
+function ClientList(list){
+	this.list = list;
+}
+
+ClientList.prototype.addClient = function(client){
+	
+
+}
+
+ClientList.prototype.removeClient = function(client){
+	
+}
+
+ClientList.prototype.broadcast = function(client){
+	
+}
+
+ClientList.prototype.getListCount = function(){
+	return Object.keys(this.list).length;
+} 
+
+/*
+ * Objects
+ */
+var clientList = new ClientList(new Object());
+
 /*
  * Functions
  */
+
+function connectionInit(socket){
+	//TODO
+}
+
+function connectionEnd(socket){
+	//TODO
+}
 
 
 
