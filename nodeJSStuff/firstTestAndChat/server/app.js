@@ -3,10 +3,14 @@ var io = require('socket.io').listen(app);
 var fs = require('fs');
 
 var clientprefix = "/../client";
+var libraryprefix = "/libraries";
+
+var Util = require(__dirname+libraryprefix+"/Util.js");
 
 app.listen(8080);
+
 function handler(req, res) {
-	fs.readFile(__dirname +clientprefix+req.url, function(err, data) {
+	fs.readFile(__dirname+clientprefix+req.url, function(err, data) {
 		if (err) {
 			res.writeHead(500);
 			console.log("ERROR: ");
@@ -35,15 +39,9 @@ var clients = new Object();
 var cachedMessages = new Array();
 
 io.sockets.on('connection', function(socket) {
-	/*
-	fs.writeFile(process.cwd()+"/tmp/panotest",require('util').inspect(socket), function(err) {
-	    if(err) {
-	        console.log(err);
-	    } else {
-	        console.log("The file was saved!");
-	    }
-	});
-	*/ 
+	console.log("---------------------------------");
+	console.log(typeof socket );
+
 	// Add client to the list
 	clients[socket.id] = {name: 'anonymous'};
 	
@@ -94,3 +92,17 @@ function broadcastMessage(socket,data){
 	});
 }
 
+
+/*
+ * Write to file
+ */
+
+/*
+fs.writeFile(process.cwd()+"/tmp/panotest",require('util').inspect(socket), function(err) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("The file was saved!");
+    }
+});
+*/ 
