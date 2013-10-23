@@ -84,6 +84,14 @@ io.sockets.on('connection', function(socket) {
 		Util.personList.broadcast(person);
 	});
 	
+	socket.on('color', function(color){
+		var person = Util.personList.list[socket.id];
+		
+		person.color = color;
+		
+		Util.personList.broadcast(person);
+	});
+	
 	
 	// When someone leaves
 	socket.on('disconnect', function() {
@@ -110,6 +118,9 @@ function broadcastMessage(socket,data){
 		"message" : message
 	});
 }
+
+
+
 
 
 /*

@@ -14,6 +14,7 @@ function Person(name,socket){
 	this.name = name;
 	this.socket = socket;
 	this.uid = this.socket.id;
+	this.color;
 	this.lastActive = new Date().getTime();
 	this.isTyping = false;
 	this.numMessagesSent = 0;
@@ -100,7 +101,12 @@ PersonList.prototype.getNameList = function(){
 	console.log("==== PersonList.getNameList");
 	var unfilteredList = this.list;
 	var filteredList = Object.keys(this.list).map(function(single){
-		return {name: unfilteredList[single].name, isTyping: unfilteredList[single].isTyping}; //TODO perhaps color here
+		var person = unfilteredList[single];
+		return {
+			name: person.name?person.name:"anonymous", 
+			isTyping: person.isTyping,
+			color: person.color,
+		};
 		});
 	console.log(filteredList)
 	return filteredList;
