@@ -5,26 +5,20 @@
 	<script>
   // Establish socket connection
   var socket = io.connect(); // Removing localhost because it was only working locally
+  // Make an API that represents the different functions
+  
   var name = "anonymous";
+  var typing = false;
+  var typingTimer;
   $(document).ready(function(e){
 	  $("#name").keypress(function(e) {
 		if(e.which == 13) {
-			name = e.target.value;
-			if(name.length>0){
-				$("#name").before("<strong>"+name+"</strong>");
-				$("#name").remove();
-				console.log(socket);
-				socket.emit("name",{name: name});
-			}
+				sendName(socket);
 		}
 	   });
 	  $("#message").keypress(function(e) {
 		if(e.which == 13) {
-			if($("#name").length > 0 && $("#name").val().length > 0 && name == "anonymous"){
-				name = $("#name").val();
-				$("#name").before("<strong>"+name+"</strong>");
-				$("#name").remove();
-			}
+			sendName(socket);
 			var text = $("#message").val();
 			$("#message").val('');
 			// emit vs send?
@@ -32,20 +26,37 @@
 		}
 	   });
 	  
+	  $("#message").keydown(function(e) {
+		  typing = true;
+		  clearTimeout(typingTimer);
+		  typingTimer = setTimeout(function(){
+			  if(!typing){
+				  console.log("Sending")
+				  socket.emit("typing",0);
+			  }
+		  },2000);
+		  socket.emit("typing",1);
+	   });
+	  
+	  $("#message").keyup(function(e) {
+		  typing = false;
+	   });
+	  
 	  
 	  // When we get a message
-	  socket.on('message', function(data){
-		  printMessage(data);
+	  socket.on('message', function(message){
+		  printMessage(message.data);
 		  
 	  });
 	  
 	  // When we get cached messages
-	  socket.on('cached', function(data){
-		  for(var i=0;i<data.length;i++){
-			  printMessage(data[i]);
+	  socket.on('cache', function(cache){
+		  console.log("==== Received Cached");
+		  for(var i=0;i<cache.data.length;i++){
+			  printMessage(cache.data[i].message);
 		  }
-		  // Remove listener
-		  socket.on('cached',null);
+		  // Remove listener40$
+		  socket.on('cache',null);
 	  });
 	  
 	  socket.on('clientList',function(clients){
@@ -56,7 +67,23 @@
 	  
   });
 
+  function sendName(socket){
+	  	console.log("===== sendName")
+	  	if($("#name").length == 0)return;
+	    
+	  	name = $("#name").val();
+	  	if(name.length > 0 && name != "anonymous"){
+			$("#name").before("<strong>"+name+"</strong>");
+			$("#name").remove();
+			console.log("sending name "+name)
+			socket.emit("name",{name: name});
+		}
+  }
+  
+  
   function printMessage(data){
+	  console.log("===== printMessage");
+	  console.log(data);
 	  var message = data.message;
 	  var name = data.name;
 	  var color = pickColor(name);
@@ -90,16 +117,25 @@
   
   function populateClientList(clients){
 	  var peopleList = clients.data;
+	  var typingPeopleList = new Array();
 	  var numClients = peopleList.length;
-	  var string = numClients+" client"+(numClients>1?"s":'')+" connected: ";
+	  var allstring = numClients+" client"+(numClients>1?"s":'')+" connected: ";
+	  var typingString = '';
 	  for(var i=0;i<numClients;i++){
 		  var name = peopleList[i].name;
 		  var color = pickColor(name);
 		  var colorString = "rgb("+color.red+","+color.green+","+color.blue+")";
-		  string += '<strong style="color:'+colorString+';">'+name+"</strong>";
-		  if(i!=numClients-1)string+=", ";
+		  allstring += '<strong style="color:'+colorString+';">'+name+"</strong>";
+		  if(i!=numClients-1)allstring+=", ";
+		  
+		  
+		  if(peopleList[i].isTyping)typingString+= '<strong style="color:'+colorString+';">'+name+"...</strong> ";
 	  }
-	  $("#clientList").html(string);
+	  if(typingString == '')typingString = "(Noone is typing right now)";
+	  
+	  
+	  $("#clientList").html(allstring);
+	  $("#typingPeople").html(typingString);
   }
   /*
   socket.on('message', function (data) {
@@ -184,7 +220,7 @@
 	  margin-top:0px;
 	
 	  margin-bottom:10px;
-	
+	var
 	}
 	
 	
@@ -222,8 +258,14 @@
 	
 	#messageback{
 		min-height: 50%;
+		max-height: 60%;
 		overflow-y: scroll;
 		word-wrap: break-word;
+	}
+	
+	.italics{
+		font-style: italic;
+		font-weight: 300;
 	}
 	</style>
 </head>
@@ -238,14 +280,17 @@
 			<input id="name" type="text"></input><br>
 		</div>
 		<div class="inputarea">
-			<label>Enter your Message: </label>
+			<label>Type your message here:</label>
 			<input id="message" type="text"></input>
 		</div>
 	</div>
 	<hr>
 	<div class = "bottom">
 		<h2>Messages</h2>
-		<div id = "messageBack"></div>
+		<div class="inputarea">
+			Typing: <span id="typingPeople" class="italics">(Noone is typing right now)</span>
+		</div>
+		<div id = "messageBack" class="inputarea"></div>
 	</div>
 </body>
 </html>

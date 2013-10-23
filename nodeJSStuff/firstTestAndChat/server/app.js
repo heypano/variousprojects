@@ -51,34 +51,35 @@ io.sockets.on('connection', function(socket) {
 	Util.personList.add(person);
 	
 	// Broadcast list of clients
-	Util.personList.broadcast(person);
+	Util.personList.broadcast(person); // (this broadcast was caused by this person)
 	
 	// Send things that were last said
-	//socket.emit('cached',cachedMessages);
+	Util.cachedMessages.send(person);
+	
 	
 	socket.on('message', function(data) {
-		var name = data.name;
-		
-		// Save the client's name (and IP later?)
-		//clients[socket.id].name = name;
-		
-		// Broadcast list of clients
-		//broadcastAll(socket,'clientList',clients);
+		var message = new Util.Message(person, "message", data);
 		
 		// Broadcast message
-		broadcastMessage(socket,data);
+		message.send(true);
 		
-		// Save 10 Messages
-		//if(cachedMessages.length >= 10)cachedMessages.shift();
-		//cachedMessages.push(data);
-		
+		// Add message to cache
+		Util.cachedMessages.add(message);
 	});
 	
 	socket.on('name', function(data){
-		var name = data.name;
+		var namedPerson = Util.personList.list[socket.id];
 		
+		namedPerson.name = data.name;
+		person = namedPerson
+		
+		Util.personList.broadcast(person);
+	});
+	
+	socket.on('typing', function(isTyping){
 		var person = Util.personList.list[socket.id];
-		person.name = name;
+		
+		person.isTyping = isTyping;
 		
 		Util.personList.broadcast(person);
 	});

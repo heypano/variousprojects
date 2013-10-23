@@ -15,6 +15,7 @@ function Person(name,socket){
 	this.socket = socket;
 	this.uid = this.socket.id;
 	this.lastActive = new Date().getTime();
+	this.isTyping = false;
 	this.numMessagesSent = 0;
 }
 
@@ -25,7 +26,7 @@ function Person(name,socket){
 Person.prototype.sendMessage = function(content){
 	console.log("==== Person.sendMessage");
 	var message = new Message(this,"message",content);
-	message.send();
+	message.send(true);
 }
 
 /**
@@ -34,7 +35,7 @@ Person.prototype.sendMessage = function(content){
 Person.prototype.broadcastList = function(content){
 	console.log("==== Person.broadcastList");
 	var message = new Message(this,"clientList",content);
-	message.send();
+	message.send(true);
 }
 
 /**
@@ -52,7 +53,7 @@ function Message(sender,type,content) {
 	this.timestamp = new Date().getTime();
 }
 
-Message.prototype.send = function(){
+Message.prototype.send = function(broadcast){
 	console.log("==== Message.send");
 	var socket = this.sender.socket;
 	/* Filter the data that's being sent */
@@ -65,7 +66,9 @@ Message.prototype.send = function(){
 	/* To the person that sent it */
 	socket.emit(this.type, data);
 	/* To everyone else */
-	socket.broadcast.emit(this.type, data);
+	if(broadcast){
+		socket.broadcast.emit(this.type, data);
+	}
 }
 
 
@@ -75,7 +78,7 @@ Message.prototype.send = function(){
 
 function PersonList(){
 	console.log("==== New PersonList");
-	this.list = new Object();
+	this.list = new Object();new Message()
 }
 
 PersonList.prototype.add = function(person){
@@ -97,7 +100,7 @@ PersonList.prototype.getNameList = function(){
 	console.log("==== PersonList.getNameList");
 	var unfilteredList = this.list;
 	var filteredList = Object.keys(this.list).map(function(single){
-		return {name: unfilteredList[single].name}; //TODO perhaps color here
+		return {name: unfilteredList[single].name, isTyping: unfilteredList[single].isTyping}; //TODO perhaps color here
 		});
 	console.log(filteredList)
 	return filteredList;
@@ -112,17 +115,35 @@ PersonList.prototype.getListCount = function(){
  * Objects
  */
 var personList = new PersonList(new Object());
-var cachedMessages = new Array();
+var cachedMessages = new Object();
+cachedMessages.list = new Array();
 
 /**
  * @param message: the message object
  */
 cachedMessages.add = function(message){
+	console.log("==== cachedMessages.add");
 	// Save 10 Messages
-	if(this.length >= 10)this.shift();
-	this.push({name: message.sender.name, message: message.content});
+	if(this.list.length >= 10)this.list.shift();
+	this.list.push({name: message.sender.name, message: message.content});
 }
 
+cachedMessages.send = function(person){
+	console.log("==== cachedMessages.send");
+	var message = new Message(person,"cache",this.getFilteredList());
+	console.log(message);
+	message.send(false);
+}
+
+cachedMessages.getFilteredList = function(){
+	console.log("==== cachedMessages.getFilteredList");
+	var unfilteredList = this.list;
+	var filteredList = this.list.map(function(single){
+		return {message:single.message};
+		});
+	console.log(filteredList)
+	return filteredList;
+}
 /*
  * Functions
  */
@@ -144,3 +165,4 @@ function connectionEnd(socket){
 module.exports.Person = Person;
 module.exports.Message = Message;
 module.exports.personList = personList;
+module.exports.cachedMessages = cachedMessages;
