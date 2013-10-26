@@ -106,7 +106,7 @@
 		  color = pickColor(name);
 		  colorString = "rgb("+color.red+","+color.green+","+color.blue+")";
 	  }
-	  $("#messageBack").append('<strong style="color:'+colorString+';">'+name+"</strong> says: "+message+"<br>");
+	  $("#messageBack").prepend('<strong style="color:'+colorString+';">'+name+"</strong> says: "+message+"<br>");
 	  
 	  $("#messageBack").animate({ scrollTop: $("#messageBack").prop('scrollHeight') }, 100);
   }
@@ -286,6 +286,7 @@
 		max-height: 60%;
 		overflow-y: scroll;
 		word-wrap: break-word;
+		padding-top:10px;
 	}
 	
 	.italics{
@@ -310,29 +311,24 @@
 	</style>
 </head>
 <body>
-	<h1>Welcome to Pano's chatroom</h1>
-	<div class = "top">
+	<h1>P@n0Ch@t</h1>
+	<hr>
+	<div class = "bottom">
 		<div class="inputarea">
-			<div id="clientList"></div>
-		</div>
-		<div class="inputarea">
-			<label>Name: </label>
-			<input id="name" type="text"></input>
+			<input id="name" type="text" placeholder="Enter your name here"></input>
 			<div class="colordiv">
-				<label class="color">Select a Color:</label>
+				<!-- <label class="color">Select a Color:</label> -->
 				<input id="color" type="color" class="color"></input><br>
 			</div>
 		</div>
 		<div class="inputarea">
-				<label>Type your message here:</label>
-				<input id="message" type="text"></input>
+				<input id="message" type="text" autocomplete="off" placeholder='Enter your message here'></input>
 		</div>
-	</div>
-	<hr>
-	<div class = "bottom">
-		<h2>Messages</h2>
 		<div class="inputarea">
+		<div class="inputarea">
+			<div id="clientList"></div>
 			Typing: <span id="typingPeople" class="italics">(Noone is typing right now)</span>
+		</div>
 		</div>
 		<div id = "messageBack" class="inputarea"></div>
 	</div>
