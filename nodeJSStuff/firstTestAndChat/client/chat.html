@@ -80,7 +80,7 @@
 	    
 	  	name = $("#name").val();
 	  	if(name.length > 0 && name != "anonymous"){
-			$("#name").before("<strong>"+name+"</strong>");
+			$("#name").before("<span style=\"font-weight: 300;font-size: 144%;\">"+name+"</strong>");
 			$("#name").remove();
 			console.log("sending name "+name)
 			socket.emit("name",{name: name});
@@ -189,7 +189,7 @@
 	
 	}
 	
-	body, input[type="text"]{
+	body, input[type="text"], .decorative{
 	
 	  font-family: 'Open Sans', sans-serif;
 	
@@ -213,7 +213,7 @@
 	
 	  border: 1px solid rgb(150,150,150);
 	
-	  -moz-border-radius: 5px;
+	  -moz-border-radius: p805px;
 	
 	  border-radius: 5px;
 	
@@ -250,15 +250,14 @@
 	
 	
 	#name{
-	
-	  width: 20%;
+	max-width:60%;
 	}
 	
 	#message{
-		width: 80%;
+	width:100%;
 	}
 	
-	.inputarea{
+	.inputarea{o
 	   min-height: 50px;
 	   float:left;
 	   clear:both;
@@ -296,8 +295,9 @@
 	
 	input[type="color"]{
 		width:50px;
-		height:50px;
+		height:55px;
 		border:0px;
+		padding-bottom:6px;
 	}
 	label, input {
 	    display: inline-block;
@@ -306,6 +306,7 @@
 	}
 	.colordiv{
 		display: inline-block;
+		float:right;
 		
 	}
 	</style>
@@ -314,14 +315,14 @@
 	<h1>P@n0Ch@t</h1>
 	<hr>
 	<div class = "bottom">
-		<div class="inputarea">
-			<input id="name" type="text" placeholder="Enter your name here"></input>
+		<div class="inputarea p80">
+			<input id="name" type="text" placeholder="Name"></input>
 			<div class="colordiv">
 				<!-- <label class="color">Select a Color:</label> -->
 				<input id="color" type="color" class="color"></input><br>
 			</div>
 		</div>
-		<div class="inputarea">
+		<div class="inputarea p80">
 				<input id="message" type="text" autocomplete="off" placeholder='Enter your message here'></input>
 		</div>
 		<div class="inputarea">
