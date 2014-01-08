@@ -24,7 +24,17 @@ function handler(req, res) {
 }
 
 
-
+/**
+ * 
+ * 
+ * 
+ * 
+ *  CHATROOM
+ * 
+ * 
+ * 
+ * 
+ */
 //TODO Implement "X is typing..." (send is not typing a)when hit enter b)when 2 inactive seconds
 //TODO Implement sound with on/off
 //TODO Implement data storage on the server (logs)
