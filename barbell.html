@@ -52,16 +52,20 @@
       //When user presses enter
       $("#weight").keyup(function(){
     	  var weight = jQuery('#weight').val();
-    	  //TODO do not let weight more than 200
+    	  //TODO do not let weight more than 500 also just numbers
+    	  //TODO limit 
+		  var barbellWeight = $('input[name=barbell]:checked').val();
     	  calculateDivision(weight);
-    	  var weight1 = 5*(Math.floor(weight/5));
+    	  var weight1 = 5*(Math.floor(weight/5)); //TODO this
     	  var weight2 = 5*(Math.ceil(weight/5));
     	  var output = "";
     	  output += "<strong>Rounded down: "+weight1+"</strong>";
     	  output += "<br>";
     	  output += "<strong>Rounded up: "+weight2+"</strong>";
-    	  $("#result").html(output);
+    	 // $("#result").html(output);
       });
+      //TODO run function when radio button changes
+      //TODO maybe weight a bit before running and cancel if more is typed
   });
 
   var denominations = [45, 25, 15, 10, 5, 2.5];
@@ -70,7 +74,7 @@
 	  var stringObj = new Object();
 	  stringObj.string = "";
 	  combinations(weight, 0, [], null, stringObj);
-	  console.log(stringObj);
+	  $("#result").html(stringObj.string);
 	  return stringObj;
   }
         
@@ -90,7 +94,7 @@
 		  var combString = combToString(comb, maxAmount);
 		  //console.log(combString);
 		  if(combString.length){
-			  stringObj.string += combString+"<br>";
+			  stringObj.string = combString+"<br>"+stringObj.string;
 		  }
 		  return 1;
 	  }
@@ -105,6 +109,7 @@
 	  var string = "";
 	  for(var i = 0; i < comb.length ; i++){
 		  var obj = comb[i];
+		  //TODO adjust this condition
 		  if (obj.amount > maxAmount && obj.value < denominations[1]  ) return ""; // ignore combinations with large amounts unless they're close to max weight
 		  if (obj.amount > 0) string += obj.amount+" x "+obj.value+", ";
 	  }
@@ -120,7 +125,9 @@
 <body>
 <h2>Barbell Weight Calculator</h2>
 <br>
-Barbell size
+<label>Barbell Size: </label>
+<input type="radio" name="barbell" value="45" checked="checked"/> 45 lbs    
+<input type="radio" name="barbell" value="33" /> 33 lbs<br><br>
 <label>Total Target Weight: </label>
 <input type="text" id="weight" autofocus/>
 <br><br>
