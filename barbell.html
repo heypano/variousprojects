@@ -55,14 +55,20 @@
     	  //TODO do not let weight more than 500 also just numbers
     	  //TODO limit 
 		  var barbellWeight = $('input[name=barbell]:checked').val();
-    	  calculateDivision(weight);
-    	  var weight1 = 5*(Math.floor(weight/5)); //TODO this
+    	  var weight1 = 5*(Math.floor(weight/5)); //TODO figure out better formula
     	  var weight2 = 5*(Math.ceil(weight/5));
     	  var output = "";
-    	  output += "<strong>Rounded down: "+weight1+"</strong>";
+    	  output += "<strong>On each side (Rounded down: "+weight1+")</strong>";
+    	  weight1 = (weight1 - barbellWeight)/2; // on each side
     	  output += "<br>";
-    	  output += "<strong>Rounded up: "+weight2+"</strong>";
-    	 // $("#result").html(output);
+    	  output += calculateDivision(weight1);
+    	  output += "<br>";
+    	  output += "<strong>On each side (Rounded up: "+weight2+")</strong>";
+    	  weight2 = (weight2 - barbellWeight)/2; // on each side
+    	  output += "<br>";
+    	  output += calculateDivision(weight2);
+    	  output += "<br>";
+    	  $("#result").html(output);
       });
       //TODO run function when radio button changes
       //TODO maybe weight a bit before running and cancel if more is typed
@@ -74,8 +80,8 @@
 	  var stringObj = new Object();
 	  stringObj.string = "";
 	  combinations(weight, 0, [], null, stringObj);
-	  $("#result").html(stringObj.string);
-	  return stringObj;
+	  //$("#result").html(stringObj.string);
+	  return stringObj.string;
   }
         
   function combinations(left, i, comb, add, stringObj){
