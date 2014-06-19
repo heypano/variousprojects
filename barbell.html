@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HeyPano - Barbell Weight Calculator</title>
+  <meta name="description" content="Barbell Weight Calculator">
+  <meta name="author" content="Pano">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,600,300,400' rel='stylesheet' type='text/css'>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <style>
+  html,body{
+    height:100%;
+    max-height:100%;
+    overflow:hidden;
+  }
+  body, input{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 120%;
+    width:auto;
+    padding:10px;
+    max-width:100%;
+  }
+  
+  input[type="text"]{
+    border: 1px solid rgb(150,150,150);
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-right:20px;
+  }
+  h1,h2,h3,h4,h5{
+    font-weight:300;
+    margin-top:0px;
+    margin-bottom:0px;
+  }
+  
+  h6{
+    font-weight:300;
+    margin-top:0px;
+    margin-bottom:10px;
+  }
+  </style>
+ <script>
+  
+ /*
+ 	Used python algorithm from http://stackoverflow.com/questions/9329446/how-to-do-for-each-over-an-array-in-javascript
+ */
+ 
+  var maxAmount = 1; // Maximum amount of the same weight on each side, i.e. not more than 2 x 2.5s on each side
+ 
+  $(document).ready(function(){
+      //When user presses enter
+      $("#weight").keyup(function(){
+    	  var weight = jQuery('#weight').val();
+    	  //TODO do not let weight more than 200
+    	  calculateDivision(weight);
+    	  var weight1 = 5*(Math.floor(weight/5));
+    	  var weight2 = 5*(Math.ceil(weight/5));
+    	  var output = "";
+    	  output += "<strong>Rounded down: "+weight1+"</strong>";
+    	  output += "<br>";
+    	  output += "<strong>Rounded up: "+weight2+"</strong>";
+    	  $("#result").html(output);
+      });
+  });
+
+  var denominations = [45, 25, 15, 10, 5, 2.5];
+  
+  function calculateDivision(weight){
+	  var stringObj = new Object();
+	  stringObj.string = "";
+	  combinations(weight, 0, [], null, stringObj);
+	  console.log(stringObj);
+	  return stringObj;
+  }
+        
+  function combinations(left, i, comb, add, stringObj){
+	  if(add != null){
+		  comb.push(add);
+	  }
+	  if((left == 0) || (denominations.length == i+1)){
+		  if((denominations.length == i+1) && left>0){
+			  comb.push({amount: left/denominations[i], value: denominations[i]});
+			  i++;
+		  }
+		  while (i < denominations.length){
+			  comb.push({amount: 0, value: denominations[i]});
+			  i++;
+		  }
+		  var combString = combToString(comb, maxAmount);
+		  //console.log(combString);
+		  if(combString.length){
+			  stringObj.string += combString+"<br>";
+		  }
+		  return 1;
+	  }
+	  var cur = denominations[i];
+	  for (var x = 0; x < (Math.floor(left/cur) + 1) ; x++){
+		  combinations(left - x*cur, i+1, comb.slice(0), {amount: x, value: cur}, stringObj);
+	  }
+	  return;
+  }
+  
+  function combToString(comb, maxAmount){
+	  var string = "";
+	  for(var i = 0; i < comb.length ; i++){
+		  var obj = comb[i];
+		  if (obj.amount > maxAmount && obj.value < denominations[1]  ) return ""; // ignore combinations with large amounts unless they're close to max weight
+		  if (obj.amount > 0) string += obj.amount+" x "+obj.value+", ";
+	  }
+	  string = string.substring(0, string.length - 2); // delete last comma
+	  return string;
+  }
+  
+</script>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h2>Barbell Weight Calculator</h2>
+<br>
+Barbell size
+<label>Total Target Weight: </label>
+<input type="text" id="weight" autofocus/>
+<br><br>
+<div id="result">Result will show up here</div>
+</body>
+</html>
