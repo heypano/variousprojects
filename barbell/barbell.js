@@ -5,6 +5,7 @@
  
   var maxAmount = 1; // Maximum amount of the same weight on each side, i.e. not more than 2 x 2.5s on each side
   var maxWeight = 500; // Maximum weight allowed
+  var maxCombos = 5;  //How many combos do you want to show
   var denominations = [45, 25, 15, 10, 5, 2.5];
 
   $(document).ready(function(){
@@ -53,26 +54,40 @@
 	  output += "<strong>On each side (Rounded down: "+weight1+")</strong>";
 	  weight1 = (weight1 - barbellWeight)/2; // on each side
 	  output += "<br>";
-	  output += calculateDivision(weight1);
+	  var weight1Combos = calculateDivision(weight1);
+	  output += comboString(weight1Combos);
 	  output += "<br>";
 	  output += "<strong>On each side (Rounded up: "+weight2+")</strong>";
 	  weight2 = (weight2 - barbellWeight)/2; // on each side
 	  output += "<br>";
-	  output += calculateDivision(weight2);
+	  var weight2Combos = calculateDivision(weight2);
+	  output += comboString(weight2Combos);
 	  output += "<br>";
 	  $("#result").html(output);
   }
   
+  function comboString(combos){
+	  var output = new String();
+	  var count = 0;
+	  for(var i = combos.length-1; i >= 0; i--){
+		  var combo = combos[i];
+		  var string = combToString(combo);
+		  if(string == "")continue;
+		  output += string+"<br>";
+		  count ++;
+		  if(count == maxCombos)break;
+	  }
+	  return output;
+  }
+  
   function calculateDivision(weight){
-	  var stringObj = new Object();
-	  stringObj.string = "";
-	  combinations(weight, 0, [], null, stringObj);
-	  return stringObj.string;
+	  var combos = new Array();
+	  combinations(weight, 0, [], null, combos);
+	  return combos;
   }
   
   
-  //TODO Collect all combinations here instead of stringObj
-  function combinations(left, i, comb, add, stringObj){
+  function combinations(left, i, comb, add, combos){
 	  if(add != null){
 		  comb.push(add);
 	  }
@@ -85,15 +100,12 @@
 			  comb.push({amount: 0, value: denominations[i]});
 			  i++;
 		  }
-		  var combString = combToString(comb, maxAmount);
-		  if(combString.length){
-			  stringObj.string = combString+"<br>"+stringObj.string;
-		  }
+		  combos.push(comb); //Save the combination
 		  return 1;
 	  }
 	  var cur = denominations[i];
 	  for (var x = 0; x < (Math.floor(left/cur) + 1) ; x++){
-		  combinations(left - x*cur, i+1, comb.slice(0), {amount: x, value: cur}, stringObj);
+		  combinations(left - x*cur, i+1, comb.slice(0), {amount: x, value: cur}, combos);
 	  }
 	  return;
   }
@@ -102,12 +114,11 @@
 	  
   }
   
-  
-  function combToString(comb, maxAmount){
+  // For 1 combination
+  function combToString(comb){
 	  var string = "";
 	  for(var i = 0; i < comb.length ; i++){
 		  var obj = comb[i];
-		  //TODO adjust this condition
 		  if (obj.amount > maxAmount && obj.value < denominations[1]  ) return ""; // ignore combinations with large amounts unless they're close to max weight
 		  if (obj.amount > 0) string += obj.amount+" x "+obj.value+", ";
 	  }
