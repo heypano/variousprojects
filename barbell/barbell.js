@@ -9,7 +9,7 @@
   var denominations = [45, 25, 15, 10, 5, 2.5];
 
   $(document).ready(function(){
-	  $("#weight").attr("placeholder","weight in lbs (max. "+maxWeight+")");
+	  $("#weight").attr("placeholder","weight(s) in lbs (max. "+maxWeight+")");
       $("#weight").keyup(refreshHandler);
       $("input[name=barbell]:radio").change(refreshHandler);
       //TODO maybe wait a bit before running and cancel if more is typed
@@ -145,7 +145,7 @@
   
   function emptyRow(){
 	  var emptyRowText;
-	  emptyRowText = '<tr><td colspan = "7"> No Weight Entered </td></tr>';
+	  emptyRowText = '<tr><td colspan = "7"> No Weight(s) Entered </td></tr>';
 	  return emptyRowText;
   }
   
