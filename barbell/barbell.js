@@ -17,8 +17,8 @@
 
   
   function refreshHandler(){
-	  // Get User Input
-	  var weightString = jQuery('#weight').val().trim();
+	  // Get User Input and HTML escape
+	  var weightString = $('<div/>').text(jQuery('#weight').val().trim()).html();
 	  var weights = weightString.split(/[, ]/);
 	  var barbellWeight = +($('input[name=barbell]:checked').val());
 	  var output;
