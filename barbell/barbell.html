@@ -23,7 +23,40 @@
 <label>Total Target Weight: </label>
 <input type="text" id="weight" autofocus/>
 <br><br>
+<div id="message"></div>
 <hr>
-<div id="result"></div>
+<div id="result">
+<table id="results">
+	<colgroup>
+		<col class="weight">
+		<col span="6">
+	</colgroup>
+	<thead>
+		<tr>
+			<th rowspan="2">Target Weight</th>
+			<th colspan ="6">
+				Configuration
+			</th>
+		</tr>
+		<tr>
+			<th>45</th>
+			<th>25</th>
+			<th>15</th>
+			<th>10</th>
+			<th>5</th>
+			<th>2.5</th>
+		</tr>
+			<!-- <th scope="col">Rounded Up</th> -->
+			<!-- <th scope="col">Rounded Down</th> -->
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan = "7">
+				No Weight Entered
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
 </body>
 </html>
