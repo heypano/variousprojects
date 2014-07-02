@@ -5,75 +5,89 @@
  
   var maxAmount = 1; // Maximum amount of the same weight on each side, i.e. not more than 2 x 2.5s on each side
   var maxWeight = 500; // Maximum weight allowed
-  var maxCombos = 5;  //How many combos do you want to show
+  var maxCombos = 1;  //How many combos do you want to show
   var denominations = [45, 25, 15, 10, 5, 2.5];
 
   $(document).ready(function(){
-	  $("#weight").attr("placeholder","weight in lbs (max. "+maxWeight+")");
+	  $("#weight").attr("placeholder","weight(s) in lbs (max. "+maxWeight+")");
       $("#weight").keyup(refreshHandler);
       $("input[name=barbell]:radio").change(refreshHandler);
       //TODO maybe wait a bit before running and cancel if more is typed
   });
 
   
-  
   function refreshHandler(){
-	  var weight = +(jQuery('#weight').val());
+	  // Get User Input
+	  var weightString = jQuery('#weight').val().trim();
+	  var weights = weightString.split(/[, ]/);
 	  var barbellWeight = +($('input[name=barbell]:checked').val());
+	  var output;
+	  // Empty old results
+	  $("#result table tbody").html("");
 	  
-	  if(!isInt(weight)){
-		  $("#weight").addClass("invalid");
-		  $("#weight").attr("title","Please enter an integer");
-		  $("#result").html("Target weight needs to be an integer");
-		  return false;
+	  if(weightString.length == 0){
+		  output = emptyRow();
 	  }
-	  else if(weight > maxWeight){
-		  $("#weight").addClass("invalid");
-		  $("#weight").attr("title","Please enter a weight less than "+500+" pounds");
-		  $("#result").html("Target weight is cannot be over 500 pounds");
-		  return false;
-	  }
-	  else if(weight <= barbellWeight){
-		  $("#weight").removeClass("invalid");
-		  if(jQuery('#weight').val().length > 0){
-			  $("#result").html("Target weight is too low");
-			  $("#weight").attr("title","Please enter a weight that's higher than the barbell weight");
+	  
+	  for (var i = 0 ; i < weights.length ; i++){
+		  var weightString = weights[i];
+		  if(weightString == "") continue;
+		  
+		  var weight = +(weightString); // Make sure it's a number
+		  if(!isInt(weight)){
+			  $("#weight").addClass("invalid");
+			  $("#weight").attr("title","Please enter an integer");
+			  output += invalidRow(weightString, "Target weight needs to be an integer");
 		  }
-		  return false;
-	  }
-	  else{
-		  $("#weight").removeClass("invalid");
-		  $("#weight").attr("title",null);
+		  else if(weight > maxWeight){
+			  $("#weight").addClass("invalid");
+			  $("#weight").attr("title","Please enter a weight less than 500 pounds");
+			  output += invalidRow(weightString, "Target weight is cannot be over 500 pounds");
+		  }
+		  else if(weight < barbellWeight){
+			  $("#weight").addClass("invalid");
+			  $("#weight").attr("title","Please enter a weight that's higher than the barbell weight");
+			  output += invalidRow(weightString, "Target weight cannot be less than the barbell weight");
+		  }
+		  else{
+			  $("#weight").removeClass("invalid");
+			  $("#weight").attr("title",null);
+			  output += calculate(weight, barbellWeight);
+		  }
 	  }
 	  
-	  
-	  if(weight % 5 == 0) weight += 0.01; // To show 2 separate weights
-	  var weight1 = 5*(Math.floor(weight/5));
-	  var weight2 = 5*(Math.ceil(weight/5));
-	  var output = "";
-	  output += "<strong>On each side (Rounded down: "+weight1+")</strong>";
-	  weight1 = (weight1 - barbellWeight)/2; // on each side
-	  output += "<br>";
-	  var weight1Combos = calculateDivision(weight1);
-	  output += comboString(weight1Combos);
-	  output += "<br>";
-	  output += "<strong>On each side (Rounded up: "+weight2+")</strong>";
-	  weight2 = (weight2 - barbellWeight)/2; // on each side
-	  output += "<br>";
-	  var weight2Combos = calculateDivision(weight2);
-	  output += comboString(weight2Combos);
-	  output += "<br>";
-	  $("#result").html(output);
+	  $("#result table tbody").html(output);
   }
   
-  function comboString(combos){
+  
+  function calculate(weight, barbellWeight){
+	  
+	  // Make sure weight is divisible by 5
+	  if(weight % 5 != 0) weight = 5*(Math.floor(weight/5));
+	  
+	  // Calculate weight on each side
+	  var weightPart = (weight - barbellWeight)/2; // on each side
+	  
+	  // Find the combinations
+	  var combos = calculateDivision(weightPart);
+	  
+	  //TODO filter the combinations 
+	  filterCombos(combos)
+	  
+	  // Get HTML for the combos
+	  var output = comboString(combos, weight);
+	  return output;
+  }
+  
+  
+  function comboString(combos, weight){
 	  var output = new String();
 	  var count = 0;
 	  for(var i = combos.length-1; i >= 0; i--){
 		  var combo = combos[i];
-		  var string = combToString(combo);
+		  var string = combToString(combo, weight);
 		  if(string == "")continue;
-		  output += string+"<br>";
+		  output += string;
 		  count ++;
 		  if(count == maxCombos)break;
 	  }
@@ -115,17 +129,35 @@
   }
   
   // For 1 combination
-  function combToString(comb){
-	  var string = "";
+  function combToString(comb, targetWeight){
+	  var string = "<tr>";
+	  string += "<td>"+targetWeight+" lbs</td>";
+	  
 	  for(var i = 0; i < comb.length ; i++){
 		  var obj = comb[i];
 		  if (obj.amount > maxAmount && obj.value < denominations[1]  ) return ""; // ignore combinations with large amounts unless they're close to max weight
-		  if (obj.amount > 0) string += obj.amount+" x "+obj.value+", ";
+		  string += "<td>"+obj.amount+"</td>"
 	  }
-	  string = string.substring(0, string.length - 2); // delete last comma
+	  string += "</tr>";
 	  return string;
+  }
+  
+  
+  function emptyRow(){
+	  var emptyRowText;
+	  emptyRowText = '<tr><td colspan = "7"> No Weight Entered </td></tr>';
+	  return emptyRowText;
+  }
+  
+  function invalidRow(weightString, text){
+	  var invalidRowText;
+	  invalidRowText = '<tr><td>'+weightString+' lbs</td><td colspan = "6">'+text+'</td></tr>';
+	  return invalidRowText;
   }
   
   function isInt(n) {
 	   return typeof n === 'number' && parseFloat(n) == parseInt(n, 10) && !isNaN(n);
 	}
+  
+  
+  
