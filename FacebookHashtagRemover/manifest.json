@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "Facebook hashtag post remover",
+  "description": "This extension removes posts with hashtags from your list.",
+  "version": "1.0",
+
+  "permissions": [
+    "https://facebook.com/",
+    "http://facebook.com/"
+  ],
+  "content_scripts": [
+  {
+    "matches": ["*://*.facebook.com/*"],
+    "css": ["fb.css"],
+    "js": ["jquery-1.11.1.min.js", "fb.js"]
+  }
+  ]
+}
