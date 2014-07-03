@@ -72,7 +72,7 @@ Combinations.prototype.calculateCombosInternal = function (left, i, comb, add){
 			  comb.push({amount: left/this.denominations[i], value: this.denominations[i]});
 			  i++;
 		  }
-		  while (i < denominations.length){
+		  while (i < this.denominations.length){
 			  comb.push({amount: 0, value: this.denominations[i]});
 			  i++;
 		  }
@@ -85,3 +85,9 @@ Combinations.prototype.calculateCombosInternal = function (left, i, comb, add){
 	  }
 	  return;
 }
+
+
+//Priorities for filter:
+
+// Primarily: Least total number of things (combo class should return that)
+// Highest weight takes priority

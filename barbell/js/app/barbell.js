@@ -1,6 +1,3 @@
- /*
- 	Used python algorithm from http://stackoverflow.com/questions/9329446/how-to-do-for-each-over-an-array-in-javascript
- */
   var maxAmount = 1; // Maximum amount of the same weight on each side, i.e. not more than 2 x 2.5s on each side
   var maxWeight = 500; // Maximum weight allowed
   var maxCombos = 1;  //How many combos do you want to show
@@ -13,7 +10,6 @@
       //TODO maybe wait a bit before running and cancel if more is typed
   });
 
-  //TODO add require.js
   
   function refreshHandler(){
 	  // Get User Input and HTML escape
