@@ -21,6 +21,7 @@
 	  var weightString = $('<div/>').text(jQuery('#weight').val().trim()).html();
 	  var weights = weightString.split(/[, ]/);
 	  var barbellWeight = +($('input[name=barbell]:checked').val());
+	  //console.log("refreshHandler ",weightString,weights,barbellWeight);
 	  var output;
 	  // Empty old results
 	  $("#result table tbody").html("");
@@ -62,20 +63,23 @@
   
   function calculate(weight, barbellWeight){
 	  
-	  // Make sure weight is divisible by 5
-	  if(weight % 5 != 0) weight = 5*(Math.floor(weight/5));
-	  
 	  // Calculate weight on each side
-	  var weightPart = (weight - barbellWeight)/2; // on each side
+	  var weightPart = weight - barbellWeight;
+	  
+	  // Make sure weight is divisible by 5
+	  if(weightPart % 5 != 0) weightPart = 5*(Math.floor(weightPart/5));
+	  var printedWeight = weightPart + barbellWeight;
+	  
+	  weightPart = weightPart/2; // on each side
 	  
 	  // Find the combinations
 	  var combos = calculateDivision(weightPart);
 	  
-	  //TODO filter the combinations 
+	  //TODO filter the combinations -- no non-integers / no lots of small things 
 	  filterCombos(combos)
 	  
 	  // Get HTML for the combos
-	  var output = comboString(combos, weight);
+	  var output = comboString(combos, printedWeight);
 	  return output;
   }
   
@@ -129,6 +133,8 @@
   }
   
   // For 1 combination
+  // TODO add row number here for alternating
+  // FIX issue with 33
   function combToString(comb, targetWeight){
 	  var string = "<tr>";
 	  string += "<td>"+targetWeight+" lbs</td>";
@@ -136,7 +142,7 @@
 	  for(var i = 0; i < comb.length ; i++){
 		  var obj = comb[i];
 		  if (obj.amount > maxAmount && obj.value < denominations[1]  ) return ""; // ignore combinations with large amounts unless they're close to max weight
-		  string += "<td>"+obj.amount+"</td>"
+		  string += "<td>"+obj.amount+"</td>";
 	  }
 	  string += "</tr>";
 	  return string;
