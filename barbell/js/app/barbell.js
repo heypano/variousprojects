@@ -60,10 +60,8 @@
 	  
 	  // Find the combinations
 	  var combos = new Combinations(weight,barbellWeight);
-	  
 	  //TODO filter the combinations -- no non-integers / no lots of small things 
 	  filterCombos(combos)
-	  
 	  // Get HTML for the combos
 	  var output = comboString(combos.combos, combos.actualWeight);
 	  return output;
@@ -75,7 +73,7 @@
 	  var count = 0;
 	  for(var i = combos.length-1; i >= 0; i--){
 		  var combo = combos[i];
-		  var string = combToString(combo, weight);
+		  var string = combo.render();
 		  if(string == "")continue;
 		  output += string;
 		  count ++;
@@ -87,23 +85,6 @@
   function filterCombos(combos){
 	  
   }
-  
-  // For 1 combination
-  // TODO add row number here for alternating
-  // FIX issue with 33
-  function combToString(comb, targetWeight){
-	  var string = "<tr>";
-	  string += "<td>"+targetWeight+" lbs</td>";
-	  
-	  for(var i = 0; i < comb.length ; i++){
-		  var obj = comb[i];
-		  if (obj.amount > maxAmount && obj.value < denominations[1]  ) return ""; // ignore combinations with large amounts unless they're close to max weight
-		  string += "<td>"+obj.amount+"</td>";
-	  }
-	  string += "</tr>";
-	  return string;
-  }
-  
   
   function emptyRow(){
 	  var emptyRowText;

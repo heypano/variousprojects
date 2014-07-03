@@ -58,7 +58,7 @@ Combinations.prototype.initialize = function(){
  * calculateCombos - calculate all combinations
  */
 Combinations.prototype.calculateCombos = function(){
-	this.calculateCombosInternal(this.sideWeight, 0, [], null)
+	this.calculateCombosInternal(this.sideWeight, 0, new Combination(this.actualWeight), null)
 }
 
 
