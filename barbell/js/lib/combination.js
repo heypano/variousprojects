@@ -18,17 +18,7 @@ function Combination(weight, rawArray){
 	}
 }
 
-/**
- * add - Adds an entry to the combo
- * 
- * @param amount - the amount of weights required
- * @param value - the weight of the unit
- * e.g. combo.add(3,45); adds 3 45 pound 
- */
-Combination.prototype.add = function(amount,value){
-	this.combo.push({amount: amount, value: value});
-}
-
+ // Expects {amount: x, value: x} (numbers)
 Combination.prototype.push = function(item){
 	return this.combo.push(item);
 }

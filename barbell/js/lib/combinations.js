@@ -86,6 +86,7 @@ Combinations.prototype.calculateCombosInternal = function (left, i, comb, add){
 	  return;
 }
 
+// Add sort function
 
 //Priorities for filter:
 
