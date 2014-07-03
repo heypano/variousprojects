@@ -1,8 +1,6 @@
- 
  /*
  	Used python algorithm from http://stackoverflow.com/questions/9329446/how-to-do-for-each-over-an-array-in-javascript
  */
- 
   var maxAmount = 1; // Maximum amount of the same weight on each side, i.e. not more than 2 x 2.5s on each side
   var maxWeight = 500; // Maximum weight allowed
   var maxCombos = 1;  //How many combos do you want to show
@@ -15,11 +13,12 @@
       //TODO maybe wait a bit before running and cancel if more is typed
   });
 
+  //TODO add require.js
   
   function refreshHandler(){
 	  // Get User Input and HTML escape
 	  var weightString = $('<div/>').text(jQuery('#weight').val().trim()).html();
-	  var weights = weightString.split(/[, ]/);
+	  var weights = weightString.split(/[, ;/\|\-_\\]/);
 	  var barbellWeight = +($('input[name=barbell]:checked').val());
 	  //console.log("refreshHandler ",weightString,weights,barbellWeight);
 	  var output;
@@ -63,23 +62,14 @@
   
   function calculate(weight, barbellWeight){
 	  
-	  // Calculate weight on each side
-	  var weightPart = weight - barbellWeight;
-	  
-	  // Make sure weight is divisible by 5
-	  if(weightPart % 5 != 0) weightPart = 5*(Math.floor(weightPart/5));
-	  var printedWeight = weightPart + barbellWeight;
-	  
-	  weightPart = weightPart/2; // on each side
-	  
 	  // Find the combinations
-	  var combos = calculateDivision(weightPart);
+	  var combos = new Combinations(weight,barbellWeight);
 	  
 	  //TODO filter the combinations -- no non-integers / no lots of small things 
 	  filterCombos(combos)
 	  
 	  // Get HTML for the combos
-	  var output = comboString(combos, printedWeight);
+	  var output = comboString(combos.combos, combos.actualWeight);
 	  return output;
   }
   
@@ -96,36 +86,6 @@
 		  if(count == maxCombos)break;
 	  }
 	  return output;
-  }
-  
-  function calculateDivision(weight){
-	  var combos = new Array();
-	  combinations(weight, 0, [], null, combos);
-	  return combos;
-  }
-  
-  
-  function combinations(left, i, comb, add, combos){
-	  if(add != null){
-		  comb.push(add);
-	  }
-	  if((left == 0) || (denominations.length == i+1)){
-		  if((denominations.length == i+1) && left>0){
-			  comb.push({amount: left/denominations[i], value: denominations[i]});
-			  i++;
-		  }
-		  while (i < denominations.length){
-			  comb.push({amount: 0, value: denominations[i]});
-			  i++;
-		  }
-		  combos.push(comb); //Save the combination
-		  return 1;
-	  }
-	  var cur = denominations[i];
-	  for (var x = 0; x < (Math.floor(left/cur) + 1) ; x++){
-		  combinations(left - x*cur, i+1, comb.slice(0), {amount: x, value: cur}, combos);
-	  }
-	  return;
   }
   
   function filterCombos(combos){
