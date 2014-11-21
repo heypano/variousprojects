@@ -1,0 +1,340 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="csm" xmlns:tns="csm">
+
+	<xs:simpleType name="UUID">
+		<xs:restriction base="xs:string">
+			<xs:pattern
+				value="[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}">
+			</xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="EO">
+		<xs:all>
+			<xs:element name="uuid" type="tns:UUID" maxOccurs="1"
+				minOccurs="1"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:simpleType name="IntBoolean">
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="0"></xs:enumeration>
+			<xs:enumeration value="1"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="DefaultEntry">
+		<xs:all>
+			<xs:element name="groups" type="tns:UUID" maxOccurs="unbounded"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>list of group UUIDs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="objects" type="tns:UUID" maxOccurs="unbounded"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>list of object UUIDs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="DefaultRuleEntry">
+		<xs:all>
+			<xs:element name="literals" type="xs:string" maxOccurs="unbounded"
+				minOccurs="0"></xs:element>
+			<xs:element name="groups" type="tns:UUID" maxOccurs="unbounded"
+				minOccurs="0"></xs:element>
+			<xs:element name="objects" type="tns:UUID" maxOccurs="unbounded"
+				minOccurs="0"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:simpleType name="LimitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DEFAULT" />
+			<xs:enumeration value="UNLIMITED" />
+			<xs:enumeration value="CUSTOM" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="Intrusion_AlertingSNMP">
+		<xs:all>
+			<xs:element name="pdl" type="xs:boolean" minOccurs="0"></xs:element>
+			<xs:element name="data">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="trap_type" type="xs:string"
+							maxOccurs="1" minOccurs="1">
+						</xs:element>
+						<xs:element name="type_version" maxOccurs="1"
+							minOccurs="1">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="type_v2"></xs:enumeration>
+									<xs:enumeration value="type_v3"></xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="type_v2" maxOccurs="1" minOccurs="0">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="community_string" type="xs:string">
+									</xs:element>
+									<xs:element name="trap_server" type="xs:string">
+									</xs:element>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="type_v3" maxOccurs="1" minOccurs="0">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="auth_password" type="xs:string">
+									</xs:element>
+									<xs:element name="private_password" type="xs:string">
+									</xs:element>
+									<xs:element name="trap_server" type="xs:string">
+									</xs:element>
+									<xs:element name="username" type="xs:string">
+									</xs:element>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source_id" type="tns:UUID" maxOccurs="1"
+				minOccurs="1"></xs:element>
+			<xs:element name="state" type="xs:boolean" maxOccurs="1"
+				minOccurs="1"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_AlertingSyslog">
+		<xs:all>
+			<xs:element name="pdl" type="xs:boolean" minOccurs="0"></xs:element>
+			<xs:element name="MAGIC" type="xs:string" maxOccurs="1"
+				minOccurs="1"></xs:element>
+			<xs:element name="data">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="facility">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="ALERT"></xs:enumeration>
+									<xs:enumeration value="AUDIT"></xs:enumeration>
+									<xs:enumeration value="AUTH"></xs:enumeration>
+									<xs:enumeration value="AUTHPRIV"></xs:enumeration>
+									<xs:enumeration value="CLOCK"></xs:enumeration>
+									<xs:enumeration value="CRON"></xs:enumeration>
+									<xs:enumeration value="DAEMON"></xs:enumeration>
+									<xs:enumeration value="FTP"></xs:enumeration>
+									<xs:enumeration value="KERN"></xs:enumeration>
+									<xs:enumeration value="LOCAL0"></xs:enumeration>
+									<xs:enumeration value="LOCAL1"></xs:enumeration>
+									<xs:enumeration value="LOCAL2"></xs:enumeration>
+									<xs:enumeration value="LOCAL3"></xs:enumeration>
+									<xs:enumeration value="LOCAL4"></xs:enumeration>
+									<xs:enumeration value="LOCAL5"></xs:enumeration>
+									<xs:enumeration value="LOCAL6"></xs:enumeration>
+									<xs:enumeration value="LOCAL7"></xs:enumeration>
+									<xs:enumeration value="LPR"></xs:enumeration>
+									<xs:enumeration value="MAIL"></xs:enumeration>
+									<xs:enumeration value="NEWS"></xs:enumeration>
+									<xs:enumeration value="SYSLOG"></xs:enumeration>
+									<xs:enumeration value="USER"></xs:enumeration>
+									<xs:enumeration value="UUCP"></xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="severity">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="EMERG"></xs:enumeration>
+									<xs:enumeration value="ALERT"></xs:enumeration>
+									<xs:enumeration value="CRIT"></xs:enumeration>
+									<xs:enumeration value="ERR"></xs:enumeration>
+									<xs:enumeration value="WARNING"></xs:enumeration>
+									<xs:enumeration value="NOTICE"></xs:enumeration>
+									<xs:enumeration value="INFO"></xs:enumeration>
+									<xs:enumeration value="DEBUG"></xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="syslog_host" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Single or comma separated list of IP
+									addresses.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source_id" type="tns:UUID" maxOccurs="1"
+				minOccurs="1"></xs:element>
+			<xs:element name="state" type="xs:boolean" maxOccurs="1"
+				minOccurs="1"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_SensitiveData">
+		<xs:all>
+			<xs:element name="pdl" type="xs:boolean" minOccurs="0"></xs:element>
+			<xs:element name="global">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="alert_threshold" type="xs:string"></xs:element>
+						<xs:element name="ip_filter" type="xs:string"></xs:element>
+						<xs:element name="mask_output" type="xs:string"></xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="server">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="default" type="tns:Intrusion_SDFRule"
+							maxOccurs="unbounded" minOccurs="0">
+						</xs:element>
+						<xs:element name="targets" type="tns:Intrusion_SDFRule"
+							maxOccurs="unbounded" minOccurs="0">
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source_id" type="tns:UUID" maxOccurs="1"
+				minOccurs="1"></xs:element>
+			<xs:element name="state" type="xs:boolean" maxOccurs="1"
+				minOccurs="1"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_ThresholdGlobal">
+		<xs:all>
+			<xs:element name="pdl" type="xs:boolean" minOccurs="0"></xs:element>
+			<xs:element name="data">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="count" type="xs:string"></xs:element>
+						<xs:element name="gen_id">
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="0"></xs:minInclusive>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="hitcount" type="xs:string"></xs:element>
+						<xs:element name="seconds" type="xs:positiveInteger"></xs:element>
+						<xs:element name="sig_id">
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="0"></xs:minInclusive>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="threshold_id" type="xs:string"></xs:element>
+						<xs:element name="track_by">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="1"></xs:enumeration>
+									<xs:enumeration value="2"></xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="type" type="xs:string"></xs:element>
+					</xs:all>
+
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source_id" type="tns:UUID" maxOccurs="1"
+				minOccurs="1"></xs:element>
+			<xs:element name="state" type="xs:boolean" maxOccurs="1"
+				minOccurs="1"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_RuleConfigs">
+		<xs:all>
+			<xs:element name="state" type="xs:boolean"></xs:element>
+			<xs:element name="uuid" type="tns:UUID"></xs:element>
+			<xs:element name="state_source_id" type="tns:UUID"
+				minOccurs="0"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_SDFRule">
+		<xs:all>
+			<xs:element name="data_type" type="xs:string"></xs:element>
+			<xs:element name="ports" type="xs:string"></xs:element>
+			<xs:element name="sd_pattern" type="xs:string"></xs:element>
+			<xs:element name="services" type="xs:int" maxOccurs="unbounded"
+				minOccurs="0"></xs:element>
+			<xs:element name="threshold" type="xs:int"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_LayerInfo">
+		<xs:all>
+			<xs:element name="desc" type="xs:string"></xs:element>
+			<xs:element name="level" type="xs:int"></xs:element>
+			<xs:element name="name" type="xs:string"></xs:element>
+			<xs:element name="revision" type="tns:UUID"></xs:element>
+			<xs:element name="uuid" type="tns:UUID"></xs:element>
+		</xs:all>
+
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_Targets">
+		<xs:sequence>
+			<xs:any></xs:any>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_R3Config">
+		<xs:all>
+			<xs:element name="activations_threshold" type="xs:int"></xs:element>
+			<xs:element name="deactivations_threshold" type="xs:int"></xs:element>
+			<xs:element name="detailed_reporting" type="xs:boolean"></xs:element>
+			<xs:element name="mode" type="xs:boolean"></xs:element>
+			<xs:element name="networks" type="xs:string"></xs:element>
+			<xs:element name="summary_uuid" type="tns:UUID"></xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_Variables">
+		<xs:all>
+			<xs:element name="global_vars" type="tns:Intrusion_VariableDef"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+			<xs:element name="policy_vars" type="tns:Intrusion_VariableDef"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+			<xs:element name="sourcefire_vars" type="tns:Intrusion_VariableDef"
+				maxOccurs="unbounded" minOccurs="0">
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Intrusion_VariableDef">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[a-zA-Z_]*"></xs:pattern>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="type">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="ipvar"></xs:enumeration>
+						<xs:enumeration value="portvar"></xs:enumeration>
+						<xs:enumeration value="customvar"></xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="value" type="xs:string"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

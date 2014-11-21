@@ -1,0 +1,1092 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="blarg" xmlns:tns="blarg">
+
+    
+    <complexType name="AccessControlAdvancedSettings">
+    	<sequence>
+    		<element name="adaptiveProfile" type="tns:AdaptiveProfile"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="bypassTime" maxOccurs="1" minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					General Settings - Allow an Interactive Block to
+    					bypass blocking for (seconds)
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="int">
+    					<maxInclusive value="31536000"></maxInclusive>
+    					<minInclusive value="0"></minInclusive>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="cloudTimeout" maxOccurs="1" minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Files and Malware Settings - Allow file if cloud
+    					lookup for Block Malware takes longer than
+    					(seconds)
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="int">
+    					<maxInclusive value="30"></maxInclusive>
+    					<minInclusive value="0"></minInclusive>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="detection" type="tns:Detection" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="eventQueue" type="tns:EventQueue"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+            <element name="fileCaptureSizeMin" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Files and Malware Settings - Minimum file size to
+	    				store (bytes)
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="0"></minInclusive>
+	    				<maxInclusive value="10485760"></maxInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+            <element name="fileCaptureSizeMax" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Files and Malware Settings - Maximum file size to
+	    				store (bytes) cannot be greater than malwareLimit
+	    				cannot be smaller than fileCaptureSizeMin
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="0"></minInclusive>
+	    				<maxInclusive value="10485760"></maxInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+            <element name="fileSandboxSizeMin" maxOccurs="1" minOccurs="0">
+    			<simpleType>
+    				<restriction base="int">
+    					<minInclusive value="6144"></minInclusive>
+    					<maxInclusive value="10485760"></maxInclusive>
+    				</restriction>
+    			</simpleType>
+    		</element>
+            <element name="fileSandboxSizeMax" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Files and Malware Settings - Maximum file size for
+	    				dynamic analysis testing (bytes) Min/Max defined in
+	    				/etc/sf/sandbox_file_size.cfg cannot be smaller than
+	    				fileSandboxSizeMin
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="10485760"></maxInclusive>
+	    				<minInclusive value="6144"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+            <element name="fileTypeLimit" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Files and Malware Settings - Limit the number of
+	    				bytes inspected when doing file type detection
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="long">
+	    				<maxInclusive value="4294967295"></maxInclusive>
+	    				<minInclusive value="0"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+            <element name="intrusionDefaults" type="tns:IntrusionDefaults" maxOccurs="1" minOccurs="1">
+            </element>
+            <element name="latencyRuleThreshold" minOccurs="0"
+    			maxOccurs="1" type="tns:LatencyRuleThreshold">
+    		</element>
+            <element name="latencyPacketThreshold" minOccurs="0"
+    			maxOccurs="1" type="tns:LatencyPacketThreshold">
+    		</element>
+	    	<element name="malwareLimit" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Files and Malware Settings - Do not calculate SHA256
+	    				hash values for files larger than (in bytes)
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="long">
+	    				<maxInclusive value="4294967295"></maxInclusive>
+	    				<minInclusive value="0"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+    		<element name="networkAnalysis"
+    			type="tns:NetworkAnalysis" minOccurs="1"
+    			maxOccurs="1">
+    		</element>
+    		<element name="pcre" type="tns:RegularExpression"
+    			minOccurs="0" maxOccurs="1">
+    			<annotation>
+    				<documentation>Regular expressions</documentation>
+    			</annotation>
+    		</element>
+    		<element name="perfMonitor"
+    			type="tns:PerformanceStatistics" minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="ruleProcessing" minOccurs="0" maxOccurs="1"
+    			type="tns:RuleProcessing">
+    		</element>
+            <element name="sslPolicy" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>UUID of the SSL policy</documentation>
+	    		</annotation>
+	    	</element>
+            <element name="streamGlobal" type="tns:StreamGlobal"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+	    	<element name="urlLength" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				General Settings - Maximum URL characters to store
+	    				in connection events
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="0"></minInclusive>
+	    				<maxInclusive value="4096"></maxInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+    		
+    	</sequence>
+    	
+    </complexType>
+
+
+
+    <complexType name="LatencyRuleThreshold">
+    	<sequence>
+	    	<element name="threshold" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Latency-Based Performance Settings - Rule Handling - Consecutive Threshold Violations Before Suspending Rule</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="999999"></maxInclusive>
+	    				<minInclusive value="1"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="max_rule_time" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Latency-Based Performance Settings - Rule Handling - Threshold (microseconds)</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="5"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="suspend_timeout" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Latency-Based Performance Settings - Rule Handling - Suspension Time (seconds)</documentation>
+	            </annotation>
+	            <simpleType>
+	            	<restriction base="int">
+	            		<maxInclusive value="999999"></maxInclusive>
+	            		<minInclusive value="1"></minInclusive>
+	            	</restriction>
+	            </simpleType>
+	    	</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="LatencyPacketThreshold">
+    	<sequence>
+	    	<element name="max_pkt_time" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Latency-Based Performance Settings - Packet Handling - Threshold (microseconds)</documentation>
+	            </annotation>
+	            <simpleType>
+	            	<restriction base="int">
+	            		<minInclusive value="10"></minInclusive>
+	            	</restriction>
+	            </simpleType>
+	    	</element>
+	    </sequence>
+    </complexType>
+
+    <complexType name="StreamGlobal">
+      	<sequence>
+	    	<element name="max_active_responses" minOccurs="0" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Transport/Network Layer Preprocessor Settings - Maximum Active Responses</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="25"></maxInclusive>
+	    				<minInclusive value="0"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="min_response_seconds" minOccurs="0" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Transport/Network Layer Preprocessor Settings - Minimum Response Seconds</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="1"></minInclusive>
+	    				<maxInclusive value="300"></maxInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="prune_log_max" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Transport/Network Layer Preprocessor Settings - Session Termination Logging Threshold</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="1024"></minInclusive>
+	    				<maxInclusive value="1073741824"></maxInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    </sequence>
+    </complexType>
+
+    <complexType name="RuleProcessing">
+    	<sequence>
+	    	<element name="log" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Rule Processing Configuration - Logged Events</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="1024"></maxInclusive>
+	    				<minInclusive value="1"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="max_queue" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Rule Processing Configuration - Maximum Queued Events</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="1024"></maxInclusive>
+	    				<minInclusive value="1"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="order_events" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Rule Processing Configuration - Order Events By</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="string">
+	    				<enumeration value="content_length"></enumeration>
+	    				<enumeration value="priority"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    </sequence>
+    </complexType>
+
+    <complexType name="PerformanceStatistics">
+    	<sequence>
+	    	<element name="console_flow" type="boolean" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>Performance Settings - Performance Statistics - Troubleshooting Options - Log Session/Protocol Distribution</documentation>
+	    		</annotation></element>
+	    	<element name="pktcnt" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Performance Statistics - Minimum number of packets</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<minInclusive value="0"></minInclusive>
+	    				<maxInclusive value="2147483647"></maxInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="summary" type="boolean" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>Performance Settings - Performance Statistics - Troubleshooting Options - Summary
+	only used if console_flow is true</documentation>
+	    		</annotation></element>
+	    	<element name="time" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Performance Statistics - Sample Time (seconds)</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="3600"></maxInclusive>
+	    				<minInclusive value="0"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    </sequence>	
+    </complexType>
+
+    <complexType name="Detection">
+        <annotation>
+        	<documentation></documentation>
+        </annotation>
+        <sequence>
+	        <element name="vlan_agnostic" type="boolean" minOccurs="1" maxOccurs="1">
+	        	<annotation>
+	        		<documentation>Transport/Network Layer Preprocessor Settings - Ignore the VLAN header when tracking connections</documentation>
+	        	</annotation>
+	        </element>
+        </sequence>
+    </complexType>
+
+    <complexType name="RegularExpression">
+    	<sequence>
+	    	<element name="pcre_match_limit" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Regular Expression - Match Limit</documentation>
+	            </annotation>
+	            <simpleType>
+	            	<restriction base="int">
+	            		<maxInclusive value="10000000"></maxInclusive>
+	            		<minInclusive value="1"></minInclusive>
+	            	</restriction>
+	            </simpleType>
+	    	</element>
+	    	<element name="pcre_match_limit_state" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Regular Expression - Match Limit State</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<enumeration value="0"></enumeration>
+	    				<enumeration value="1"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="pcre_match_recursion_limit" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Regular Expression - Match Recursion Limit</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="10000000"></maxInclusive>
+	    				<minInclusive value="1"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="pcre_match_recursion_limit_state" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Performance Settings - Regular Expression - Match Recursion Limit State</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<enumeration value="0"></enumeration>
+	    				<enumeration value="1"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    </sequence>
+    </complexType>
+
+    <complexType name="EventQueue">
+    	<sequence>
+	    	<element name="max_queue_events" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Performance Settings - Event Queue - Maximum Queued
+	    				Events
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="2147483647"></maxInclusive>
+	    				<minInclusive value="1"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="no_stream_inserts" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Performance Settings - Event Queue - Disable content
+	    				checks that will be inserted through the stream
+	    				reassembly process
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<enumeration value="0"></enumeration>
+	    				<enumeration value="1"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AdaptiveProfile">
+    	<sequence>
+	    	<element name="attribute_update_interval" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Detection Enhancement Settings - Adaptive Profiles -
+	    				Attribute Update Interval
+	    			</documentation>
+	    		</annotation>
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<maxInclusive value="65536"></maxInclusive>
+	    				<minInclusive value="1"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="networks" type="string" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				Detection Enhancement Settings - Adaptive Profiles -
+	    				Networks
+	    			</documentation>
+	    		</annotation>
+	    	</element>
+	    	<element name="state" minOccurs="1" maxOccurs="1">
+	            <annotation>
+	            	<documentation>Detection Enhancement Settings - Adaptive Profiles</documentation>
+	            </annotation>
+	            <simpleType>
+	    			<restriction base="int">
+	    				<enumeration value="0"></enumeration>
+	    				<enumeration value="1"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+		</sequence>	    	
+    </complexType>
+
+    <complexType name="NetworkAnalysis">
+    	<sequence>
+	    	<element name="default_nap" type="string" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>Network Analysis and Intrusion Policies - Default Network Analysis Policy</documentation>
+	    		</annotation>
+	    	</element>
+    		<element name="nap_rules" type="tns:NetworkAnalysisRule" minOccurs="0" maxOccurs="unbounded">
+    			<annotation>
+    				<documentation>Network Analysis and Intrusion Policies - Network Analysis Rules</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>    
+
+    <complexType name="NetworkAnalysisRule">
+    	<sequence>
+    		<element name="destNetworks" minOccurs="1" maxOccurs="1"
+    			type="tns:DefaultRuleEntry">
+    		</element>
+	    	<element name="na_policy" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="sourceNetworks"
+    			type="tns:DefaultRuleEntry" minOccurs="1" maxOccurs="1">
+    		</element>
+    		<element name="vlanTags" type="tns:DefaultRuleEntry"
+    			minOccurs="1" maxOccurs="1">
+    		</element>
+    		<element name="sourceZones" type="string" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="DefaultRuleEntry">
+    	<sequence>
+    		<element name="groups" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    		<element name="literals" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    		<element name="objects" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    
+    <complexType name="GeoBlocking">
+    	<sequence>
+    		<element name="master_list" type="tns:GeoBlockingMasterList" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="GeoBlockingMasterList">
+    	<sequence>
+    		<element name="geo_literals" type="string"
+    			maxOccurs="unbounded" minOccurs="0">
+                <annotation>
+                	<documentation>country IDs</documentation>
+                </annotation>
+    		</element>
+    		<element name="geo_objects" type="string" maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>geo object UUIDs</documentation>
+    			</annotation></element>
+    	</sequence>
+    	
+    </complexType>
+
+
+        <complexType name="RuleSet">
+    	<sequence>
+	    	<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+	    	<element name="permission" maxOccurs="1" minOccurs="1">
+	    		<simpleType>
+	    			<restriction base="string">
+	    				<enumeration value="firewall.modify"></enumeration>
+	    				<enumeration value="firewall.modify.admin"></enumeration>
+	    				<enumeration value="firewall.modify.root"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="rules" type="string" maxOccurs="unbounded"
+	    		minOccurs="0">
+                <annotation>
+                	<documentation>list of rule UUIDs</documentation>
+                </annotation>
+	    	</element>
+	    	<element name="type" maxOccurs="1" minOccurs="1">
+	    		<simpleType>
+	    			<restriction base="string">
+	    				<enumeration value="built-in"></enumeration>
+	    				<enumeration value="user"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>    		
+    	</sequence>
+    </complexType>
+
+    <complexType name="SecurityIntelligence">
+    	<sequence>
+    		<element name="pseudoRules" type="tns:PseudoRule"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="blacklist" maxOccurs="1" minOccurs="1">
+    			<complexType>
+    				<sequence>
+    					<element name="Group" type="tns:BlacklistEntry"
+    						maxOccurs="unbounded" minOccurs="0">
+    					</element>
+    					<element name="IPListObject"
+    						type="tns:BlacklistEntry" maxOccurs="unbounded"
+    						minOccurs="0">
+    					</element>
+    					<element name="NetworkObject"
+    						type="tns:BlacklistEntry" maxOccurs="unbounded"
+    						minOccurs="0">
+    					</element>
+    					<element name="logging" type="tns:Logging"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    		<element name="whitelist" maxOccurs="1" minOccurs="1">
+    			<complexType>
+    				<sequence>
+    					<element name="Group" type="tns:WhitelistEntry"
+    						maxOccurs="unbounded" minOccurs="0">
+    					</element>
+    					<element name="IPListObject" type="tns:WhitelistEntry" maxOccurs="unbounded" minOccurs="0"></element>
+    					<element name="NetworkObject" type="tns:WhitelistEntry" maxOccurs="unbounded" minOccurs="0"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="TargetedDevices"></complexType>
+
+    <complexType name="PseudoRule">
+    	<sequence>
+	    	<element name="id" maxOccurs="1" minOccurs="1">
+	    		<simpleType>
+	    			<restriction base="long">
+	    				<minInclusive value="2147483648"></minInclusive>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+	    	<element name="uuid" type="string" maxOccurs="1" minOccurs="1"></element>
+	    </sequence>
+    </complexType>
+    <complexType name="BlacklistEntry">
+    	<sequence>
+	    	<element minOccurs="1" maxOccurs="1" name="uuid" type="string">
+	    		<annotation></annotation>
+	    	</element>
+	    	<element minOccurs="0" maxOccurs="1" name="zone" type="string">
+	    		<annotation></annotation>
+	    	</element>
+	    	<element minOccurs="1" maxOccurs="1" name="action">
+	    		<simpleType>
+	    			<restriction base="string">
+	    				<enumeration value="block"></enumeration>
+	    				<enumeration value="monitor"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+		</sequence>
+    </complexType>
+    <complexType name="WhitelistEntry">
+		<sequence>
+	    	<element minOccurs="1" maxOccurs="1" name="uuid" type="string">
+	    		<annotation></annotation>
+	    	</element>
+	    	<element minOccurs="0" maxOccurs="1" name="zone" type="string">
+	    		<annotation></annotation>
+	    	</element>
+		</sequence>
+    </complexType>
+    <complexType name="Logging">
+    	<sequence>
+	    	<element name="beginning" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>not used by security intelligence</documentation>
+	    		</annotation></element>
+	    	<element name="end" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>not used by security intelligence</documentation>
+	    		</annotation></element>
+	    	<element name="dc" minOccurs="1" maxOccurs="1">
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<enumeration value="0"></enumeration>
+	    				<enumeration value="1"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="enabled" minOccurs="0" maxOccurs="1">
+	    		<simpleType>
+	    			<restriction base="int">
+	    				<enumeration value="0"></enumeration>
+	    				<enumeration value="1"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+	    	<element name="files" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>not used by security intelligence</documentation>
+	    		</annotation></element>
+	    	<element name="snmp" type="string" minOccurs="0" maxOccurs="1"></element>
+	    	<element name="syslog" type="string" minOccurs="0" maxOccurs="1"></element>
+	    </sequence>
+    </complexType>
+
+    <complexType name="AccessControlRule">
+    	<sequence>
+    		<element name="action" minOccurs="1" maxOccurs="1">
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="allow"></enumeration>
+    					<enumeration value="block"></enumeration>
+    					<enumeration value="block-with-http-bypass"></enumeration>
+    					<enumeration
+    						value="block-with-http-bypass-and-reset">
+    					</enumeration>
+    					<enumeration value="block-with-reset"></enumeration>
+    					<enumeration value="fast-path"></enumeration>
+    					<enumeration value="monitor"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="apps" type="tns:AppEntry"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="comments" type="tns:CommentEntry"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="destNetworks" type="tns:NetworksEntry"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+            <element name="destZones" type="string"
+    			maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>security zone UUID</documentation>
+    			</annotation>
+    		</element>
+    		<element name="disabled" minOccurs="1" maxOccurs="1">
+    			<simpleType>
+    				<restriction base="int">
+    					<enumeration value="0"></enumeration>
+    					<enumeration value="1"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="filePolicy" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					optional uuid of the file policy for this rule
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="ipsPolicy" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					optional UUID of the Intrusion policy for this
+    					rule
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="logging" type="tns:Logging" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="name" type="string" minOccurs="1"
+    			maxOccurs="1">
+    		</element>
+    		<element name="services" type="tns:ServicesEntry"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="sourceNetworks" type="tns:NetworksEntry"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="sourcePorts" type="tns:ServicesEntry"
+    			maxOccurs="1" minOccurs="1">
+    		</element>
+    		<element name="sourceZones" type="string"
+    			maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>security zone UUID</documentation>
+    			</annotation>
+    		</element>
+    		<element name="urls" type="tns:UrlEntry" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="users" type="tns:UserEntry" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="varset" type="string" minOccurs="0"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>variable set UUID</documentation>
+    			</annotation>
+    		</element>
+    		<element name="vlanTags" type="tns:VlanEntry" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AppEntry">
+    	<sequence>
+            <element name="filter" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>only used when type = "filter"</documentation>
+	    		</annotation>
+	    	</element>
+            <element name="productivities" maxOccurs="unbounded"
+    			minOccurs="0">
+    			<complexType>
+    				<sequence>
+	    				<element name="productivity" type="int"
+	    					minOccurs="1" maxOccurs="1">
+	    					<annotation>
+	    						<documentation>
+	    							Business Relevance
+	    						</documentation>
+	    					</annotation>
+	    				</element>
+					</sequence>	    				
+    			</complexType>
+    		</element>
+    		<element name="risks" maxOccurs="unbounded" minOccurs="0">
+    			<complexType>
+    				<sequence>
+    					<element name="risk" type="int" minOccurs="1" maxOccurs="1"></element>
+    				</sequence>
+    			</complexType>
+    		</element>
+    		<element name="tags" maxOccurs="unbounded" minOccurs="0">
+    			<complexType>
+    				<sequence>
+	    				<element name="tagId" type="int" minOccurs="1" maxOccurs="1"></element>
+	    				<element name="tagType" minOccurs="1" maxOccurs="1">
+	    					<simpleType>
+	    						<restriction base="string">
+	    							<enumeration value="category"></enumeration>
+	    							<enumeration value="tag"></enumeration>
+	    						</restriction>
+	    					</simpleType>
+	    				</element>
+    				</sequence>
+    			</complexType>
+    		</element>
+            <element name="type" minOccurs="1" maxOccurs="1">
+	    		<simpleType>
+	    			<restriction base="string">
+	    				<enumeration value="app"></enumeration>
+	    				<enumeration value="filter"></enumeration>
+	    				<enumeration value="object"></enumeration>
+	    			</restriction>
+	    		</simpleType>
+	    	</element>
+            <element name="types" maxOccurs="unbounded" minOccurs="0">
+    			<complexType>
+    				<sequence>
+	    				<element name="type" minOccurs="1" maxOccurs="1">
+	    					<simpleType>
+	    						<restriction base="string">
+	    							<enumeration value="isClient"></enumeration>
+	    							<enumeration value="isServer"></enumeration>
+	    							<enumeration value="isWebApp"></enumeration>
+	    						</restriction>
+	    					</simpleType>
+	    				</element>
+	    			</sequence>
+    			</complexType>
+    		</element>
+	    	<element name="value" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>
+	    				If 'type' is 'object', then the string UUID of that
+	    				object If 'type' is 'app', then the integer ID of
+	    				that app If 'type' is 'filter', not used
+	    			</documentation>
+	    		</annotation>
+	    	</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="CommentEntry">
+    	<sequence>
+	    	<element name="rendered_timestamp" type="string"  minOccurs="1" maxOccurs="1"></element>
+	    	<element name="text" type="string"  minOccurs="1" maxOccurs="1"></element>
+	    	<element name="timestamp" type="int"  minOccurs="1" maxOccurs="1"></element>
+	    	<element name="user" type="string"  minOccurs="1" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="NetworksEntry">
+    	<complexContent>
+    		<extension base="tns:DefaultEntry">
+    			<sequence>
+		            <element name="literals" type="string" maxOccurs="unbounded" minOccurs="0">
+		    			<annotation>
+		    				<documentation>list of literal network values</documentation>
+		    			</annotation></element>
+		    		<element name="geo_literals" type="int" maxOccurs="unbounded" minOccurs="0">
+		    			<annotation>
+		    				<documentation>list of geo country IDs</documentation>
+		    			</annotation></element>
+		    		<element name="geo_objects" type="string" maxOccurs="unbounded" minOccurs="0">
+		    			<annotation>
+		    				<documentation>list of GEO Object UUIDs</documentation>
+		    			</annotation></element>    			
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="ServicesEntry">
+    	<complexContent>
+    		<extension base="tns:DefaultEntry">
+    			<sequence>
+	    			<element name="literals" type="tns:ServiceLiteral"
+		    			maxOccurs="unbounded" minOccurs="0">
+		    			<annotation>
+		    				<documentation>
+		    					list of literal service values
+		    				</documentation>
+		    			</annotation>
+	    			</element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="ServiceLiteral">
+    	<sequence>
+	    	<element name="code" type="string" minOccurs="0" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>only used if protocol is "1" (ICMP)</documentation>
+	    		</annotation></element>
+	    	<element name="name" type="string" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>Generated name like "ARGUS (13)" or "TCP (6):50-100" or "All:5555" or "ICMP (1):3:5"</documentation>
+	    		</annotation></element>
+	    	<element name="port" type="string" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>the port value: either "any" or a port value like "50" or "2000-3000", or the ICMP type if the protocol is 1 (ICMP)</documentation>
+	    		</annotation></element>
+	    	<element name="protocol" type="string" minOccurs="1" maxOccurs="1">
+	    		<annotation>
+	    			<documentation>"any" or the protocol id</documentation>
+	    		</annotation>
+	    	</element>
+		</sequence>    	
+    </complexType>
+
+    <complexType name="UrlEntry">
+    	<complexContent>
+    		<extension base="tns:DefaultEntry">
+    			<sequence>
+					<element name="categories" maxOccurs="unbounded" minOccurs="0">
+		    			<complexType>
+		    				<sequence>
+			    				<element name="category" type="string" minOccurs="0" maxOccurs="1">
+			    					<annotation>
+			    						<documentation>category uuid
+			either category or reputation (or both) must be defined</documentation>
+			    					</annotation></element>
+			    				<element name="reputation" type="string" minOccurs="0" maxOccurs="1">
+			    					<annotation>
+			    						<documentation>reputation uuid
+			either category or reputation (or both) must be defined</documentation>
+			    					</annotation>
+			    				</element>
+							</sequence>
+		    			</complexType>
+		    		</element>
+		    		<element name="literals" type="string" maxOccurs="unbounded"
+		    			minOccurs="0">
+		    		</element>    			
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="UserEntry">
+    	<sequence>
+    		<element name="groups" type="string" maxOccurs="unbounded"
+    			minOccurs="0">
+                <annotation>
+                	<documentation>group names</documentation>
+                </annotation>
+    		</element>
+    		<element name="users" type="string" maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>usernames</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="VlanEntry">
+    	<complexContent>
+    		<extension base="tns:DefaultEntry">
+    			<sequence>
+		    		<element name="literals" type="string" maxOccurs="unbounded" minOccurs="0">
+		    			<annotation>
+		    				<documentation>VLAN literals, like "5" or "6-10"</documentation>
+		    			</annotation>
+		    		</element>    			
+	    		</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+    <complexType name="AccessControlPolicy">
+    	<sequence>
+    		<element minOccurs="1" maxOccurs="1" name="advanced"
+    			type="tns:AccessControlAdvancedSettings">
+    		</element>
+    		<element minOccurs="1" maxOccurs="unbounded"
+    			name="ruleSets" type="tns:RuleSet">
+    		</element>
+    		<element minOccurs="1" maxOccurs="1" name="defaultRule"
+    			type="tns:AccessControlRule">
+    		</element>
+    		
+            <element name="htmlResponses" type="tns:HtmlResponses" maxOccurs="1" minOccurs="1"></element>
+            <element minOccurs="1" maxOccurs="1" name="securityIntelligence"
+    			type="tns:SecurityIntelligence">
+    		</element>
+            <element minOccurs="1" maxOccurs="1" name="name"
+    			type="string">
+    		</element>
+    		<element minOccurs="1" maxOccurs="1" name="description"
+    			type="string">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="HtmlResponses">
+    	<sequence>
+            <element minOccurs="1" maxOccurs="1" name="blockType">
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="none"></enumeration>
+    					<enumeration value="default"></enumeration>
+    					<enumeration value="custom"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+            <element minOccurs="1" maxOccurs="1" name="bypassType">
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="none"></enumeration>
+    					<enumeration value="default"></enumeration>
+    					<enumeration value="custom"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+            <element minOccurs="1" maxOccurs="1" name="bypassHtml" type="string">
+    		</element>
+            <element minOccurs="1" maxOccurs="1" name="blockHtml" type="string">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="IntrusionDefaults">
+    	<sequence>
+            <element minOccurs="1" maxOccurs="1" name="ipsPolicy" type="string">
+    			<annotation></annotation>
+    		</element>
+            <element minOccurs="1" maxOccurs="1" name="varset" type="string">
+    			<annotation></annotation>
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="DefaultEntry">
+    	<sequence>
+            <element name="groups" type="string" maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>list of group UUIDs</documentation>
+    			</annotation></element>
+            <element name="objects" type="string" maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>list of object UUIDs</documentation>
+    			</annotation></element>
+    	</sequence>
+    </complexType>
+
+    <element name="rule" type="tns:AccessControlRuleEO"></element>
+
+
+    <complexType name="EO">
+    	<sequence>
+    		<element name="uuid" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="accessControl" type="tns:AccessControlEO"></element>
+    
+    <complexType name="AccessControlEO">
+    	<complexContent>
+    		<extension base="tns:EO">
+    			<sequence>
+    				<element name="data"
+    					type="tns:AccessControlPolicy" maxOccurs="1" minOccurs="1">
+    				</element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="AccessControlRuleEO">
+    	<complexContent>
+    		<extension base="tns:EO">
+    			<sequence>
+    				<element name="data" type="tns:AccessControlRule" maxOccurs="1" minOccurs="1"></element>
+    			</sequence>
+    		</extension>
+    	</complexContent>
+    </complexType>
+</schema>

@@ -1,0 +1,147 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<link
+	href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,600,300,400"
+	rel="stylesheet" type="text/css">
+<style>
+body * {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.pure-table td.cell-title {
+	font-weight: 800;
+}
+
+.pure-table td.cell-head {
+	background-color: #e9a3c9;
+}
+
+.pure-table td.yes-cell {
+	color: #a1d76a;
+}
+
+.pure-table td.no-cell {
+	color: #e9a3c9;
+}
+
+/*!
+Pure v0.5.0
+Copyright 2014 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+https://github.com/yui/pure/blob/master/LICENSE.md
+*/
+.pure-table {
+	/* Remove spacing between table cells (from Normalize.css) */
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+	border: 1px solid #cbcbcb;
+}
+
+.pure-table caption {
+	color: #000;
+	font: italic 85%/1 arial, sans-serif;
+	padding: 1em 0;
+	text-align: center;
+}
+
+.pure-table td,.pure-table th {
+	border-left: 1px solid #cbcbcb; /*  inner column border */
+	border-width: 0 0 0 1px;
+	font-size: inherit;
+	margin: 0;
+	overflow: visible; /*to make ths where the title is really long work*/
+	padding: 0.5em 1em; /* cell padding */
+}
+
+.pure-table td:first-child,.pure-table th:first-child {
+	border-left-width: 0;
+}
+
+.pure-table thead {
+	background: #e0e0e0;
+	color: #000;
+	text-align: left;
+	vertical-align: bottom;
+}
+
+.pure-table td {
+	background-color: transparent;
+}
+
+.pure-table-bordeno-cell td {
+	border-bottom: 1px solid #cbcbcb;
+}
+
+.pure-table-bordeno-cell tbody>tr:last-child td {
+	border-bottom-width: 0;
+}
+</style>
+<body>
+	<div>
+		<table class="pure-table pure-table-bordeno-cell">
+			<thead>
+				<th class="cell-title">So why are people still using MMS again?</th>
+				<th class="cell-head">Viber</th>
+				<th class="cell-head">Email</th>
+				<th class="cell-head">MMS</th>
+				<th class="cell-head">Social Network IMs</th>
+				<th class="cell-head">Other messengers (e.g. Google Voice)</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Send from a computer</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class="no-cell">✘</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+				</tr>
+				<tr>
+					<td>Send from a phone</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+				</tr>
+				<tr>
+					<td>Send on wifi</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class="no-cell">✘</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+				</tr>
+				<tr>
+					<td>Send on mobile data</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+				</tr>
+				<tr>
+					<td>Send using an email/username</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+					<td class="no-cell">✘</td>
+					<td class=yes-cell>✔</td>
+					<td class=yes-cell>✔</td>
+				</tr>
+				<tr>
+					<td>Send using a phone number</td>
+					<td class=yes-cell>✔</td>
+					<td class="no-cell">✘</td>
+					<td class=yes-cell>✔</td>
+					<td class="no-cell">✘</td>
+					<td class=yes-cell>✔</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

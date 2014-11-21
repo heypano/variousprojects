@@ -8,6 +8,7 @@
       $("#weight").keyup(refreshHandler);
       $("input[name=barbell]:radio").change(refreshHandler);
       //TODO maybe wait a bit before running and cancel if more is typed
+      //TODO add side total row
   });
 
   

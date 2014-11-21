@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="xs" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="xs" xmlns:csm="csm">
+	
+	<import namespace="csm" schemaLocation="common-deploy.xsd" />
+    
+    <element name="applicationFilterEO" type="tns:ApplicationFilterEO"></element>
+
+    <complexType name="ApplicationFilterEO">
+	    <complexContent>
+			<extension base="csm:EO">
+		    	<all>
+		            <element name="data">
+		                <complexType>
+		                    <all>
+		                        <element name="appEntries" type="tns:AppEntry"
+		                        	maxOccurs="unbounded" minOccurs="1">
+		                        </element>
+		                        <element name="name" type="string"></element>
+		                    </all>
+		                </complexType>
+		            </element>
+		    	</all>
+	    	</extension>
+	    </complexContent>
+    </complexType>
+
+    <complexType name="AppEntry">
+    	<all>
+            <element name="decrypted_only_detector" type="boolean" maxOccurs="1" minOccurs="0"></element>
+            <element name="filter" type="string" maxOccurs="1" minOccurs="0"></element>
+            <element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+            <element name="productivities" maxOccurs="unbounded"
+            	minOccurs="0">
+            	<complexType>
+            		<all>
+            			<element name="count" type="int"></element>
+            			<element name="name" type="string"></element>
+            			<element name="productivity" type="int"></element>
+            		</all>
+            	</complexType>
+            </element>
+            <element name="risks" maxOccurs="unbounded" minOccurs="0">
+            	<complexType>
+            		<all>
+            			<element name="count" type="int"></element>
+            			<element name="name" type="string"></element>
+            			<element name="risk" type="int"></element>
+            		</all>
+            	</complexType>
+            </element>
+            <element name="tags" maxOccurs="unbounded" minOccurs="0">
+            	<complexType>
+            		<all>
+            			<element name="count" type="int"></element>
+            			<element name="tagId" type="int"></element>
+            			<element name="tagName" type="string"></element>
+            			<element name="tagType" type="string"></element>
+            		</all>
+            	</complexType>
+            </element>
+            <element name="type" maxOccurs="1" minOccurs="1" type="string">
+            </element>
+            <element name="types" maxOccurs="unbounded" minOccurs="0">
+            	<complexType>
+            		<all>
+            			<element name="count" type="int"></element>
+            			<element name="name" type="string"></element>
+            			<element name="type" type="string"></element>
+            		</all>
+            	</complexType>
+            </element>
+            <element name="value" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</all>
+    </complexType>
+
+</schema>
