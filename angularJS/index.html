@@ -1,0 +1,32 @@
+<html ng-app="store">
+<head>
+	<script src="angular.min.js"></script>
+	<script src="app.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+</head>
+<body>
+    <p>This is 4 + 6 but with an angular expression {{4 + 6 }} </p>
+    <div ng-controller="StoreController as store" >
+        <div ng-controller="PanelController as panel">
+            <ul class="nav nav-pills">
+                <li ng-class="{ active:panel.isSelected(1) }"> <a href ng-click="panel.selectTab(1)">Description</a></li>
+                <li ng-class="{ active:panel.isSelected(2) }"> <a href ng-click="panel.selectTab(2)">Specifications</a></li>
+                <li ng-class="{ active:panel.isSelected(3) }"> <a href ng-click="panel.selectTab(3)">Reviews</a></li>
+            </ul>
+            <div ng-repeat="product in store.products" ng-hide="product.soldOut">
+                <div class="panel" ng-show="panel.isSelected(1)">
+                    <h4>Description</h4>
+                    <h1> {{product.name}} </h1>
+                    <h2> ${{product.price | currency}} </h2> <!-- Currency Filter {{ data | filter:options }} e.g. limitTo:8m , also Sorting by doing |orderBy: '-price'-->
+                    <p> {{product.description}} </p>
+                    <img ng-src="{{product.images[0].thumb}}" />
+                    <!-- Expressions define a 2-way data binding so if I say ng-click="tab = 3" then {{tab}} will always be up-to-date-->
+                </div>
+                <div class="panel" ng-show="panel.isSelected(2)"><h4>Specifications</h4><blockquote>Nothing Yet</blockquote></div>
+                <div class="panel" ng-show="panel.isSelected(3)"><h4>Reviews</h4><blockquote>Nothing Yet</blockquote></div>
+            </div>
+            <button ng-show="store.product.canPurchase"> Add to Cart </button>
+        </div>
+    </div>
+</body>
+</html>
