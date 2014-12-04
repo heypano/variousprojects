@@ -3,6 +3,14 @@
 	<script src="angular.min.js"></script>
 	<script src="app.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+    <style>
+        .ng-invalid.ng-dirty {
+            border-color: #FA787E;
+        }
+        .ng-valid.ng-dirty {
+            border-color: #78FA89;
+        }
+    </style>
 </head>
 <body>
     <p>This is 4 + 6 but with an angular expression {{4 + 6 }} </p>
@@ -16,16 +24,41 @@
             <div ng-repeat="product in store.products" ng-hide="product.soldOut">
                 <div class="panel" ng-show="panel.isSelected(1)">
                     <h4>Description</h4>
-                    <h1> {{product.name}} </h1>
-                    <h2> ${{product.price | currency}} </h2> <!-- Currency Filter {{ data | filter:options }} e.g. limitTo:8m , also Sorting by doing |orderBy: '-price'-->
+                    <h3 ng-include="'product-title.html'"></h3>
                     <p> {{product.description}} </p>
                     <img ng-src="{{product.images[0].thumb}}" />
                     <!-- Expressions define a 2-way data binding so if I say ng-click="tab = 3" then {{tab}} will always be up-to-date-->
                 </div>
                 <div class="panel" ng-show="panel.isSelected(2)"><h4>Specifications</h4><blockquote>Nothing Yet</blockquote></div>
-                <div class="panel" ng-show="panel.isSelected(3)"><h4>Reviews</h4><blockquote>Nothing Yet</blockquote></div>
-            </div>
+                <div class="panel" ng-show="panel.isSelected(3)">
+                    <h4>Reviews</h4>
+                    <blockquote ng-repeat="review in product.reviews">
+                        <b>Stars: {{review.stars}}</b>
+                        {{review.body}}
+                        <cite>by: {{review.author}}</cite>
+                    </blockquote>
+                </div>
             <button ng-show="store.product.canPurchase"> Add to Cart </button>
+            <form name="reviewForm" ng-controller="ReviewController as reviewCtrl" ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+                <blockquote>
+                    <b>Stars: {{reviewCtrl.review.stars}}</b>
+                    {{reviewCtrl.review.body}}
+                    <cite>by: {{reviewCtrl.review.author}}</cite>
+                </blockquote>
+                <select ng-model="reviewCtrl.review.stars" required>
+                    <option value="1">1 star</option>
+                    <option value="2">2 star</option>
+                    <option value="3">3 star</option>
+                    <option value="4">4 star</option>
+                    <option value="5">5 star</option>
+                </select>
+                <textarea ng-model="reviewCtrl.review.body" required></textarea>
+                <label>by:</label>
+                <input type="email" ng-model="reviewCtrl.review.author" required/>
+                <div>reviewForm is {{reviewForm.$valid}}</div>
+                <input type="submit" value="Submit" />
+            </form>
+            </div>
         </div>
     </div>
 </body>

@@ -16,7 +16,7 @@
     
     //Controllers help us get data into our store (define behavior). Attach controller to html in a div using ng-controller directive 
     // e.g. <div ng-controller="StoreController as store"> and then access data like {{store.product.name}}
-    
+    // ng-model creates a two way binding between form and element
     app.controller('StoreController', function () {
         // Don't use "this", look into $scope
         this.products = gems; // You can access by array index using sort.products[0].name or whatever 
@@ -31,8 +31,23 @@
             return this.tab === checkTab;
         };
     });
+    
+    app.controller("ReviewController", function () {
+        this.review = {};
+        this.addReview = function (product) {
+            product.reviews.push(this.review);
+            this.review = {};
+        };
+    });
+    
+    // For validation - turn off default browser validation using novalidate
+    // will get class ng-pristine/ng-dirty and ng-invalid/ng-valid)
     // Use ng-init directive to initialize -- or don't cause it should go iside the controller ^^^
     // Use the ng-class directive to add classes e.g. ng-class="{ active:tab === 1 }"
+    
+    
+    // Make custom directives
+    // Make custom html snippets with ng-include
     gems = [
         {
             name: 'Dodecahedron',
@@ -48,6 +63,18 @@
                 {
                     full: 'andromeda.png',
                     thumb: 'andromeda_thumb.png'
+                }
+            ],
+            reviews: [
+                {
+                    stars: 5,
+                    body: "I love this product",
+                    author: "joe@thomas.com"
+                },
+                {
+                    stars: 1,
+                    body: "I hate this product",
+                    author: "mary@thomas.com"
                 }
             ]
         },         {
@@ -65,6 +92,18 @@
                     full: 'andromeda.png',
                     thumb: 'andromeda_thumb.png'
                 }
+            ],
+            reviews: [
+                {
+                    stars: 5,
+                    body: "I love this product",
+                    author: "joe@thomas.com"
+                },
+                {
+                    stars: 1,
+                    body: "I hate this product",
+                    author: "mary@thomas.com"
+                }
             ]
         },
         {
@@ -80,6 +119,18 @@
                 {
                     full: 'andromeda.png',
                     thumb: 'andromeda_thumb.png'
+                }
+            ],
+            reviews: [
+                {
+                    stars: 5,
+                    body: "I boo this product",
+                    author: "joe@thomas.com"
+                },
+                {
+                    stars: 1,
+                    body: "I ree this product",
+                    author: "mary@thomas.com"
                 }
             ]
         }
