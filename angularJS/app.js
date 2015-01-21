@@ -2,14 +2,22 @@
 /*global angular, console*/
 // BDD vs TDD
 
-
+// RESOURCES
+// https://docs.angularjs.org
+//  ^ developer guide and other learning resources, API reference and such
+//  egghead.io
+//  thinkster.io
+//  kapeli.com/dash
+//  meetups e.g. meetup.com
+//  soup to bits
+// coffeescript
 
 
 //Wrap all javascript in closure - good habit
 (function () {
     "use strict";
     // Define the module (application component) here, then in HTML set the directive (html annotation that trigger js behavior) ng-app (runs when it loads) <html ng-app="store">. Directives define behavior and are used to run or reference javascript code and modules define dependencies
-    var app = angular.module('store', [ ]),
+    var app = angular.module('store', ['store-products']),
         gems;
 
     //Expression are how we insert dynamic values into HTML e.g. {{ "a"+"b" }} in html
@@ -45,9 +53,28 @@
     // Use ng-init directive to initialize -- or don't cause it should go iside the controller ^^^
     // Use the ng-class directive to add classes e.g. ng-class="{ active:tab === 1 }"
     
+    // Use $http service to fetch things
+    // Use $log to print logs
+    // Use $filter for filters
+    // e.g. $http({method: "GET", url: "/products.json"}); or 
+    // $http.get('/products.json', {apiKey: 'myApiKey'});
+    // Return a Promise object with .success() and .error()
+    // 
+    // Array syntax for controllers
+    //
+    // DEPENDENCY INJECTION - injecting the dependencies to the controller as arguments
+    /* app.controller('SomeController', ['$http', '$log', function($http, $log){
+        var store = this;
+        store.products = [];
+        $http.get('/products.json').success(function(data){
+            store.products = data;
+        });
+    }]);
+    */
     
-    // Make custom directives
-    // Make custom html snippets with ng-include
+    
+    
+    
     gems = [
         {
             name: 'Dodecahedron',

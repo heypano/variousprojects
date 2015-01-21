@@ -2,6 +2,7 @@
 <head>
 	<script src="angular.min.js"></script>
 	<script src="app.js"></script>
+	<script src="products.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
     <style>
         .ng-invalid.ng-dirty {
@@ -24,7 +25,7 @@
             <div ng-repeat="product in store.products" ng-hide="product.soldOut">
                 <div class="panel" ng-show="panel.isSelected(1)">
                     <h4>Description</h4>
-                    <h3 ng-include="'product-title.html'"></h3>
+                    <product-title></product-title>
                     <p> {{product.description}} </p>
                     <img ng-src="{{product.images[0].thumb}}" />
                     <!-- Expressions define a 2-way data binding so if I say ng-click="tab = 3" then {{tab}} will always be up-to-date-->
